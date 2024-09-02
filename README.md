@@ -14,9 +14,10 @@ Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo de
 ## Integrantes
 
 * Guilherme Henrique Braga e Silva
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
+* Yago Henrique Martins Apolinario
+* Luan Pablo Mendes Amaral
+* Tibério Armando da Silva
+* Bernardo Rodrigues Gomes Ferreira
 
 ## Orientador
 
