@@ -16,7 +16,10 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
 |--------------------|------------------------------------|----------------------------------------|
 |Fisioterapeuta  | Gerenciar as consultas       |     Organizar de forma eficiente as consultas dos clientes na minha clínica de fisioterapia      |
-|Cliente       | Realizar marcações de consultas               | Facilitar o agendamento e acompanhamento das minhas sessões de fisioterapia  |
+|Tereza de Jesus       | Realizar marcações de consultas               | Facilitar o agendamento e acompanhamento das minhas sessões de fisioterapia  |
+|Augusto Farfus | Consultar o meu histórico de consultas | Para acompanhar a minha evolução nas atividades físicas | 
+|Nicole Catarina | Recomendações de exercícios físicos | Para realizar atividades físicas de acordo com as recomendações feita por um fisioterapeuta de acordo com o resultado das consultas |
+| André Luiz | Realizar marcações de consultas | Facilitar o agendamento e acompanhamento das minhas sessões de fisioterapia para acompanhar a minha recuperação  |
 
 
 ## Requisitos
