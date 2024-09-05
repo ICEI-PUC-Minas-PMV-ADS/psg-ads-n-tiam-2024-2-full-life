@@ -24,14 +24,21 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 ## Requisitos
 
-As tabelas que se seguem apresentam os requisitos funcionais e não funcionais que detalham o escopo do projeto. Para determinar a prioridade de requisitos, aplicar uma técnica de priorização de requisitos e detalhar como a técnica foi aplicada.
-
 ### Requisitos Funcionais
 
 |ID    | Descrição do Requisito  | Prioridade |
 |------|-----------------------------------------|----|
-|RF-001| Permitir que o usuário cadastre tarefas | ALTA | 
-|RF-002| Emitir um relatório de tarefas no mês   | MÉDIA |
+|RF-001| Permitir que o usuário faça agendamento de consultas | ALTA | 
+|RF-002| Permitir que o usuário acompanhe o andamento das suas consultas   | MÉDIA |
+|RF-003| Permitir que o usuário visualize os exercícios físicos recomendados pelo fisioterapeuta  | BAIXA |
+|RF-004| Permitir que o fisioterapeuta visualize os dados do paciente | MÉDIA |
+|RF-005| Permitir que o usuário anexa exames  | BAIXA |
+|RF-006| Permitir que o usuário visualize a sua evolução após a consulta | MÉDIA |
+|RF-007| Permitir que o fisioterapeuta visualize todas as consultas marcadas | ALTA |
+|RF-008| Permitir que o usuário visualize os dias disponíveis da agenda do fisioterapeuta | ALTA |
+|RF-009| Permitir que o usuário ou o fisioterapeuta faça cancelamento da consulta | MÉDIA |
+|RF-010| Permitir que o usuário faça um cadastro no aplicativo | MÉDIA |
+
 
 ### Requisitos não Funcionais
 
@@ -40,20 +47,6 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 |RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | MÉDIA | 
 |RNF-002| Deve processar requisições do usuário em no máximo 3s |  BAIXA | 
 
-Com base nas Histórias de Usuário, enumere os requisitos da sua solução. Classifique esses requisitos em dois grupos:
-
-- [Requisitos Funcionais
- (RF)](https://pt.wikipedia.org/wiki/Requisito_funcional):
- correspondem a uma funcionalidade que deve estar presente na
-  plataforma (ex: cadastro de usuário).
-- [Requisitos Não Funcionais
-  (RNF)](https://pt.wikipedia.org/wiki/Requisito_n%C3%A3o_funcional):
-  correspondem a uma característica técnica, seja de usabilidade,
-  desempenho, confiabilidade, segurança ou outro (ex: suporte a
-  dispositivos iOS e Android).
-Lembre-se que cada requisito deve corresponder à uma e somente uma
-característica alvo da sua solução. Além disso, certifique-se de que
-todos os aspectos capturados nas Histórias de Usuário foram cobertos.
 
 ## Restrições
 
