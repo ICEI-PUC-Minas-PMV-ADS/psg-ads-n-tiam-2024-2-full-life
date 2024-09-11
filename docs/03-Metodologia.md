@@ -21,7 +21,7 @@ Gerência de Branches
 - `main`: versão estável já testada do software
 - `release`: versão já testada do software, porém instável
 - `testing`: versão em testes do software
-- `develop`: versão de desenvolvimento do software
+- `dev`: versão de desenvolvimento do software
 - `feature\<feature-name>`: desenvolvimento de uma nova funcionalidade
 
 Gerência de Issues
@@ -47,6 +47,7 @@ Commits e Merges
 - Merges: Integrações de branches são realizadas utilizando merges, preferencialmente via pull requests no GitHub, garantindo revisões de código antes da integração.
 
 ### Divisão de Papéis
+
 A equipe está organizada da seguinte maneira:
 - Scrum Master: Yago Henrique;
 - Product Owner: Guilherme Henrique;
