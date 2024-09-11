@@ -48,7 +48,7 @@ Commits e Merges
 Apresente a divisão de papéis entre os membros do grupo.
 
 Exemplificação: A equipe utiliza metodologias ágeis, tendo escolhido o Scrum como base para definição do processo de desenvolvimento. A equipe está organizada da seguinte maneira:
-- Scrum Master: Felipe Domingos;
+- Scrum Master: Yago Henrique;
 - Product Owner: Guilherme Henrique;
 - Equipe de Desenvolvimento: Yago Henrique, Guilherme Henrique, Tibério Silva, Bernardo Rodrigues, Luan Pablo;
 - Equipe de Design: Luan Pablo.
