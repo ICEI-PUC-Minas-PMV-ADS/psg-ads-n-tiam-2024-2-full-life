@@ -32,11 +32,11 @@ Gerência de Issues
 Gerência de Tags
 Para o padrão de nomenclatura das tags no projeto, usaremos:
 
-- `Formato: vX.0.0 (ex: v1.0.0)` Versões principais (Major): Mudanças significativas e incompatíveis com versões anteriores.
+- `Formato: vX.0.0 (ex: v1.0.0)` Versões principais: Mudanças significativas e incompatíveis com versões anteriores.
         
-- `Formato: vX.Y.0 (ex: v1.1.0)` Versões secundárias (Minor): Adicionam funcionalidades de forma retrocompatível.
+- `Formato: vX.Y.0 (ex: v1.1.0)` Versões secundárias: Adicionam funcionalidades de forma retrocompatível.
         
-- `Formato: vX.Y.Z (ex: v1.1.1)` Correções de bugs (Patch): Corrige falhas sem impactar a compatibilidade.
+- `Formato: vX.Y.Z (ex: v1.1.1)` Correções de bugs: Corrige falhas sem impactar a compatibilidade.
         
 
 Commits e Merges
