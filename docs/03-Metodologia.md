@@ -21,7 +21,7 @@ Gerência de Branches
 - `release`: versão já testada do software, porém instável
 - `testing`: versão em testes do software
 - `develop`: versão de desenvolvimento do software
-- `feature\"feature-name"`: desenvolvimento de uma nova funcionalidade
+- `feature\<feature-name>`: desenvolvimento de uma nova funcionalidade
 
 Gerência de Issues
 - `documentation`: melhorias ou acréscimos à documentação
