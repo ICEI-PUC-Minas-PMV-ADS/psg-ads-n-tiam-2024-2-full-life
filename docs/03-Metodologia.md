@@ -44,10 +44,7 @@ Commits e Merges
 - Merges: Integrações de branches são realizadas utilizando merges, preferencialmente via pull requests no GitHub, garantindo revisões de código antes da integração.
 
 ### Divisão de Papéis
-
-Apresente a divisão de papéis entre os membros do grupo.
-
-Exemplificação: A equipe utiliza metodologias ágeis, tendo escolhido o Scrum como base para definição do processo de desenvolvimento. A equipe está organizada da seguinte maneira:
+A equipe está organizada da seguinte maneira:
 - Scrum Master: Yago Henrique;
 - Product Owner: Guilherme Henrique;
 - Equipe de Desenvolvimento: Yago Henrique, Guilherme Henrique, Tibério Silva, Bernardo Rodrigues, Luan Pablo;
