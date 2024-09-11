@@ -17,6 +17,7 @@ A ferramenta de controle de versão adotada no projeto foi o
 foi utilizado para hospedagem do repositório.
 
 Gerência de Branches
+
 - `main`: versão estável já testada do software
 - `release`: versão já testada do software, porém instável
 - `testing`: versão em testes do software
@@ -24,12 +25,14 @@ Gerência de Branches
 - `feature\<feature-name>`: desenvolvimento de uma nova funcionalidade
 
 Gerência de Issues
+
 - `documentation`: melhorias ou acréscimos à documentação
 - `bug`: uma funcionalidade encontra-se com problemas
 - `enhancement`: uma funcionalidade precisa ser melhorada
 - `feature`: uma nova funcionalidade precisa ser introduzida
 
 Gerência de Tags
+
 Para o padrão de nomenclatura das tags no projeto, usaremos:
 
 - `Formato: vX.0.0 (ex: v1.0.0)` Versões principais: Mudanças significativas e incompatíveis com versões anteriores.
