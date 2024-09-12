@@ -44,9 +44,11 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 |ID     | Descrição do Requisito  |Prioridade |
 |-------|-------------------------|----|
-|RNF-001| O sistema deve ser responsivo para rodar em um dispositivos móvel | MÉDIA | 
+|RNF-001| O sistema deve ser responsivo para rodar em um dispositivo móvel | MÉDIA | 
 |RNF-002| Deve processar os agendamentos no máximo 10 segundos |  MÉDIA | 
-|RNF-003| Deve permitir apenas 1 cadastro por CPF |  MÉDIA | 
+|RNF-003| Deve permitir apenas 1 cadastro por CPF |  MÉDIA |
+|RNF-004| O sistema deve garantir que todos os dados estejam em conformidade com a LGPD (Lei Geral de Proteção de Dados)| MÉDIA |
+|RNF-005| O sistema deve suportar até 500 usuários simultâneos sem degradação significativa de desempenho | MÉDIA |
 
 
 ## Restrições
@@ -57,12 +59,15 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |01| O projeto deverá ser entregue até o final do semestre |
 |02| Não pode ser desenvolvido fora do éscopo mobile        |
 |03| O projeto deverá ter um banco de dados em nuvem     |
+|04| Todos os integrantes devem ter conhecimentos das tecnologias aplicadas |
+|05| O projeto deve seguir a documentação|
 
 
 ## Diagrama de Casos de Uso
 
+![Diagrama sem nome](https://github.com/user-attachments/assets/03cd9220-7d2a-4e37-bde3-890b03d47cba)
+![Diagrama sem nome 2](https://github.com/user-attachments/assets/cbb351c0-9236-43e4-af79-4dc697cd555f)
 
-![UML](https://github.com/user-attachments/assets/4811fbc9-1cf6-4f9f-ad21-d1c919de4946)
 
 
 
