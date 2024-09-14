@@ -63,9 +63,9 @@ Gestão de Projetos e Times:
 
 
 ## Relação de Ambientes de Trabalho
+[Documento15.pdf](https://github.com/user-attachments/files/17000789/Documento15.pdf)
 
-Os artefatos do projeto são desenvolvidos a partir de diversas plataformas e a relação dos ambientes com seu respectivo propósito deverá ser apresentada em uma tabela que especifica que detalha Ambiente, Plataforma e Link de Acesso. 
-Nota: Vide documento modelo do estudo de caso "Portal de Notícias" e defina também os ambientes e frameworks que serão utilizados no desenvolvimento de aplicações móveis.
+
 
 ## Controle de Versão
 
@@ -112,9 +112,19 @@ A equipe está organizada da seguinte maneira:
 - Equipe de Design: Luan Pablo.
 
 ### Processo
+A implementação do Scrum pelo grupo envolve o uso de um recurso de gerenciamento de projeto oferecido pelo GitHub, que auxilia na visualização do progresso e na organização das tarefas. Aqui estão os principais aspectos a serem considerados no processo:
 
-Coloque  informações sobre detalhes da implementação do Scrum seguido pelo grupo. O grupo deverá fazer uso do recurso de gerenciamento de projeto oferecido pelo GitHub, que permite acompanhar o andamento do projeto, a execução das tarefas e o status de desenvolvimento da solução.
- 
+- Sprint Planning: As Sprints são planejadas com base nos requisitos e nas prioridades do projeto. O backlog é atualizado no GitHub Projects, onde as tarefas são divididas em issues.
+
+- Daily Stand-ups: O grupo realiza reuniões diárias (stand-ups) para acompanhar o progresso e resolver impedimentos rapidamente. As atualizações podem ser feitas no GitHub para manter o time alinhado com o que foi discutido.
+
+- Task Tracking: As issues no GitHub são atribuídas a diferentes membros do time, com rótulos indicando o estágio (to-do, in-progress, done). Cada tarefa acompanha uma descrição clara dos critérios de aceitação.
+
+- Sprint Reviews e Retrospectives: No final de cada Sprint, o progresso é revisado, e as tarefas concluídas são analisadas em conjunto com o status geral do projeto. Feedback é capturado e ajustes são feitos na próxima Sprint com base na retrospectiva.
+
+Esse processo garante uma boa visibilidade do progresso do projeto, e uma boa comunicação entre os membros e uma metodologia ágil de resolução de problemas.
+
+ (Processo Coloque informações sobre detalhes da implementação do Scrum seguido pelo grupo. O grupo deverá fazer uso do recurso de gerenciamento de projeto oferecido pelo GitHub, que permite acompanhar o andamento do projeto, a execução das tarefas e o status de desenvolvimento da solução.)
 > **Links Úteis**:
 > - [Planejamento e Gestáo Ágil de Projetos](https://pucminas.instructure.com/courses/87878/pages/unidade-2-tema-2-utilizacao-de-ferramentas-para-controle-de-versoes-de-software)
 > - [Sobre quadros de projeto](https://docs.github.com/pt/issues/organizing-your-work-with-project-boards/managing-project-boards/about-project-boards)
