@@ -65,9 +65,25 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 ## Diagrama de Casos de Uso
 
-![Diagrama sem nome](https://github.com/user-attachments/assets/03cd9220-7d2a-4e37-bde3-890b03d47cba)
-![Diagrama sem nome 2](https://github.com/user-attachments/assets/cbb351c0-9236-43e4-af79-4dc697cd555f)
+![Diagrama 2](https://github.com/user-attachments/assets/0d6f70a7-7d4d-4fd6-ab82-4f1e0cddda25)
 
+![Diagrama 1](https://github.com/user-attachments/assets/2df1fb65-c19c-4b63-8f75-bc10f527e4fa)
+
+![Diagrama 3](https://github.com/user-attachments/assets/e9b29759-5476-4033-a788-d37d29b02bb1)
+
+![Diagrama 4](https://github.com/user-attachments/assets/4b69bf1d-5bee-490d-9eaa-8a329c66f8a7)
+
+![Diagrama 5](https://github.com/user-attachments/assets/e2e50dda-0a1a-4f54-ac96-a2854a7f9293)
+
+![Diagrama 6](https://github.com/user-attachments/assets/1a6447da-efcc-45d8-bd6c-c5196fa43f96)
+
+![Diagrama 7](https://github.com/user-attachments/assets/fa61e7fc-c04f-491b-bc48-76a3d63db786)
+
+![Diagrama 8](https://github.com/user-attachments/assets/e675fcf1-07ca-468e-ac41-d12b10e0d8d7)
+
+![Diagrama 9](https://github.com/user-attachments/assets/c9732fe0-af3c-4818-93f8-6d3b7248eacf)
+
+![Diagrama 10](https://github.com/user-attachments/assets/e089a5df-c785-413c-803a-194cd9043b35)
 
 
 
@@ -78,9 +94,7 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 ## Gerenciamento de Equipe
 
-O gerenciamento adequado de tarefas contribuirá para que o projeto alcance altos níveis de produtividade. Por isso, é fundamental que ocorra a gestão de tarefas e de pessoas, de modo que os times envolvidos no projeto possam ser facilmente gerenciados. 
-
-![Simple Project Timeline](img/02-project-timeline.png)
+![WhatsApp Image 2024-09-14 at 15 54 31](https://github.com/user-attachments/assets/0e9f2621-ca9d-455d-a147-0539aee4d7fd)
 
 ## Gestão de Orçamento
 
