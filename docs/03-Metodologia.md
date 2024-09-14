@@ -1,9 +1,66 @@
 
 # Metodologia
+Para desenvolver o software de agendamento de consultas de fisioterapia, a equipe usou uma metodologia de trabalho bem definida, dividida em pequenos blocos de atividades.
 
-<span style="color:red">Pré-requisitos: <a href="2-Especificação do Projeto.md"> Documentação de Especificação</a></span>
+Planejamento e Definição de Requisitos
 
-Descreva aqui a metodologia de trabalho do grupo para atacar o problema. Definições sobre os ambiente de trabalho utilizados pela  equipe para desenvolver o projeto. Abrange a relação de ambientes utilizados, a estrutura para gestão do código fonte, além da definição do processo e ferramenta através dos quais a equipe se organiza (Gestão de Times).
+- Reuniões de Kickoff: Realizar reuniões iniciais na sala de aula, e grupo no whatsapp para discutir sobre a ferramenta e entrevista com o usuário.
+- Documentação de Requisitos: Separada e organizada com a escala de priodade dos requisitos funcionais e não funcionais.
+  
+Design e Arquitetura
+
+- Definição de arquitetura do sistema.
+- Criação de design e interface.
+- Criação de wireframes e protótipos.
+  
+Desenvolvimento
+
+- Desenvolvimento Ágil
+- Metodologia SCRUM.
+- Programação e Implementação.
+
+Testes e Garantia de Qualidade
+
+- Testes Automatizados
+- Testes Unitários
+- Testes de Integração
+- Testes de Interface
+- Testes Manuais
+- Testes de Usabilidade
+- Testes de Aceitação
+
+Preparação para Implantação:
+
+- Ambiente de Produção
+- Planejamento de Lançamento
+- Implantar
+- Implementação Gradual
+- Manutenção e Suporte
+
+Suporte Pós-Lançamento:
+
+- Monitoramento: Monitorar o sistema
+- Correções e Atualizações
+- Evolução do Produto
+- Planejamento de Novas Funcionalidades
+
+Ambientes de Desenvolvimento e Teste:
+
+- Ambientes Locais
+- Ambientes de Teste
+  
+Gestão de Código Fonte
+
+- Controle de versão: Git, com repositório
+- Modelos de ramificação: Git Flow
+
+Gestão de Projetos e Times:
+
+- Ferramentas de Gestão de Projetos
+- Comunicação via Whatsapp
+- Documentação
+
+
 
 ## Relação de Ambientes de Trabalho
 
