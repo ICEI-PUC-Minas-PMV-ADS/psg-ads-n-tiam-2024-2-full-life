@@ -46,9 +46,8 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 |-------|-------------------------|----|
 |RNF-001| O sistema deve ser responsivo para rodar em um dispositivo móvel | MÉDIA | 
 |RNF-002| Deve processar os agendamentos no máximo 10 segundos |  MÉDIA | 
-|RNF-003| Deve permitir apenas 1 cadastro por CPF |  MÉDIA |
-|RNF-004| O sistema deve garantir que todos os dados estejam em conformidade com a LGPD (Lei Geral de Proteção de Dados)| MÉDIA |
-|RNF-005| O sistema deve suportar até 500 usuários simultâneos sem degradação significativa de desempenho | MÉDIA |
+|RNF-003| O sistema deve garantir que todos os dados estejam em conformidade com a LGPD (Lei Geral de Proteção de Dados)| MÉDIA |
+|RNF-004| O sistema deve suportar até 500 usuários simultâneos sem degradação significativa de desempenho | MÉDIA |
 
 
 ## Restrições
@@ -98,4 +97,5 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 ## Gestão de Orçamento
 
-![image](https://github.com/user-attachments/assets/eefe3931-f822-474a-ba30-d93e94e14040)
+<img width="260" alt="image" src="https://github.com/user-attachments/assets/f873cacd-2d91-439b-9599-24ab15cc3143">
+
