@@ -56,7 +56,7 @@
 - **Descrição**: O usuário ou o fisioterapeuta poderão cancelar consultas agendadas, com possibilidade de remarcação ou justificativa.
 - **Prioridade**: Baixa
 - **Status**: A implementar
-- **Responsável**: Vitor
+- **Responsável**: Guilherme
 
 ### 10. Permitir que o usuário faça um cadastro no aplicativo
 - **Descrição**: O usuário poderá se cadastrar no aplicativo, preenchendo informações pessoais como nome, e-mail, telefone e criando uma senha de acesso.
