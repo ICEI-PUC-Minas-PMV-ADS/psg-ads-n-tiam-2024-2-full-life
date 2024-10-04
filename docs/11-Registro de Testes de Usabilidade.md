@@ -1,43 +1,48 @@
 # Registro de Testes de Usabilidade
 
-# Plano de Testes de Usabilidade
+## Informações Gerais
+- **Data do Teste:** [Data]
+- **Moderador:** [Nome do Moderador]
+- **Participante:** [Nome do Participante]
+- **Perfil do Participante:** [Paciente/Fisioterapeuta]
 
-## Objetivo
-Avaliar a facilidade de uso, navegação e compreensão das funcionalidades do aplicativo pelos usuários, além de identificar eventuais barreiras que dificultem o uso eficiente do aplicativo.
+## Tarefas Testadas
+### Tarefa 1: Agendar consulta
+- **Tempo de Conclusão:** [Tempo]
+- **Erros Cometidos:** [Descrição dos Erros]
+- **Feedback do Participante:** [Comentários]
 
-## Público-Alvo
-- **Pacientes:** Usuários que agendam consultas e acompanham seus tratamentos.
-- **Fisioterapeutas:** Usuários que gerenciam consultas, recomendam exercícios e acompanham pacientes.
+### Tarefa 2: Visualizar exercícios
+- **Tempo de Conclusão:** [Tempo]
+- **Erros Cometidos:** [Descrição dos Erros]
+- **Feedback do Participante:** [Comentários]
 
-## Tarefas para Testar
-1. Paciente agendando uma consulta
-2. Paciente visualizando exercícios
-3. Paciente anexando exames
-4. Fisioterapeuta preenchendo anamneses
-5. Navegação geral
+### Tarefa 3: Anexar exames
+- **Tempo de Conclusão:** [Tempo]
+- **Erros Cometidos:** [Descrição dos Erros]
+- **Feedback do Participante:** [Comentários]
 
-## Cenários de Teste
-- **Agendar consulta (Paciente)**
-- **Visualizar exercícios (Paciente)**
-- **Anexar exames (Paciente)**
-- **Preencher anamnese (Fisioterapeuta)**
-- **Cancelar consulta (Ambos)**
+### Tarefa 4: Preencher anamnese
+- **Tempo de Conclusão:** [Tempo]
+- **Erros Cometidos:** [Descrição dos Erros]
+- **Feedback do Participante:** [Comentários]
 
-## Critérios de Sucesso
-- Facilidade de uso
-- Tempo para completar tarefas
-- Nível de satisfação
+### Tarefa 5: Cancelar consulta
+- **Tempo de Conclusão:** [Tempo]
+- **Erros Cometidos:** [Descrição dos Erros]
+- **Feedback do Participante:** [Comentários]
 
 ## Métricas de Avaliação
-- Taxa de sucesso
-- Tempo de conclusão
-- Erros
-- Satisfação do usuário
+- **Taxa de Sucesso:** [Percentual de Sucesso]
+- **Tempo Médio de Conclusão:** [Tempo Médio]
+- **Número de Erros:** [Total de Erros]
+- **Satisfação do Usuário:** [Resumo do Feedback]
 
-## Método
-- Testes moderados
-- Testes não moderados
+## Observações Gerais
+- **Comportamento do Usuário:** [Observações sobre a navegação e interação]
+- **Dificuldades Encontradas:** [Descrição das dificuldades]
+- **Sugestões de Melhoria:** [Sugestões dos participantes]
 
-## Ferramentas de Teste
-- Gravação de tela
-- Questionários pós-teste
+## Conclusão
+- **Resumo dos Resultados:** [Resumo das principais descobertas]
+- **Recomendações:** [Recomendações para melhorias]
