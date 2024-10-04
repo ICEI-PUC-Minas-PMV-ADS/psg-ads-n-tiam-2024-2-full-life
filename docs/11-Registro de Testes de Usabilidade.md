@@ -1,18 +1,43 @@
 # Registro de Testes de Usabilidade
 
-# Informações Gerais
+# Plano de Testes de Usabilidade
 
-Data do Teste: [Data]
-Moderador: [Nome do Moderador]
-Participante: [Nome do Participante]
-Perfil do Participante: [Paciente/Fisioterapeuta]
+## Objetivo
+Avaliar a facilidade de uso, navegação e compreensão das funcionalidades do aplicativo pelos usuários, além de identificar eventuais barreiras que dificultem o uso eficiente do aplicativo.
 
-# Tarefas Testadas
-Tarefa 1: Agendar consulta
-Tempo de Conclusão: [Tempo]
-Erros Cometidos: [Descrição dos Erros]
-Feedback do Participante: [Comentários]
-Tarefa 2: Visualizar exercícios
-Tempo de Conclusão: [Tempo]
+## Público-Alvo
+- **Pacientes:** Usuários que agendam consultas e acompanham seus tratamentos.
+- **Fisioterapeutas:** Usuários que gerenciam consultas, recomendam exercícios e acompanham pacientes.
 
-Recomendações: [Recomendações para melhorias]
+## Tarefas para Testar
+1. Paciente agendando uma consulta
+2. Paciente visualizando exercícios
+3. Paciente anexando exames
+4. Fisioterapeuta preenchendo anamneses
+5. Navegação geral
+
+## Cenários de Teste
+- **Agendar consulta (Paciente)**
+- **Visualizar exercícios (Paciente)**
+- **Anexar exames (Paciente)**
+- **Preencher anamnese (Fisioterapeuta)**
+- **Cancelar consulta (Ambos)**
+
+## Critérios de Sucesso
+- Facilidade de uso
+- Tempo para completar tarefas
+- Nível de satisfação
+
+## Métricas de Avaliação
+- Taxa de sucesso
+- Tempo de conclusão
+- Erros
+- Satisfação do usuário
+
+## Método
+- Testes moderados
+- Testes não moderados
+
+## Ferramentas de Teste
+- Gravação de tela
+- Questionários pós-teste
