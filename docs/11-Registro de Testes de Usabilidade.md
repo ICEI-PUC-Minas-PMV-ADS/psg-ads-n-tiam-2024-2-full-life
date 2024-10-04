@@ -1,11 +1,13 @@
 # Registro de Testes de Usabilidade
 
-Informações Gerais
+# Informações Gerais
+
 Data do Teste: [Data]
 Moderador: [Nome do Moderador]
 Participante: [Nome do Participante]
 Perfil do Participante: [Paciente/Fisioterapeuta]
-Tarefas Testadas
+
+# Tarefas Testadas
 Tarefa 1: Agendar consulta
 Tempo de Conclusão: [Tempo]
 Erros Cometidos: [Descrição dos Erros]
