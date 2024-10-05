@@ -1,0 +1,83 @@
+{
+    "Pacientes": [
+      {
+        "id": "",
+        "nome": "",
+        "email": "",
+        "senha": "",
+        "data_nascimento": "",
+        "telefone": "",
+        "endereco": "",
+        "historico_medico": ""
+      }
+    ],
+    "Fisioterapeutas": [
+      {
+        "id": "",
+        "nome": "",
+        "email": "",
+        "senha": "",
+        "numero_crefito": "",
+        "especialidades": [],
+        "telefone": "",
+        "endereco": ""
+      }
+    ],
+    "Consultas": [
+      {
+        "id": "",
+        "id_paciente": "",
+        "id_fisioterapeuta": "",
+        "data_hora": "",
+        "observacoes": ""
+      }
+    ],
+    "RecomendacoesExercicios": [
+      {
+        "id": "",
+        "id_paciente": "",
+        "id_fisioterapeuta": "",
+        "exercicios": [],
+        "data": ""
+      }
+    ],
+    "Agendamentos": [
+      {
+        "id": "",
+        "id_paciente": "",
+        "id_fisioterapeuta": "",
+        "data_hora": "",
+        "status": ""
+      }
+    ],
+    "Anamnese": {
+      "id_paciente": "",
+      "nome_paciente": "",
+      "data_nascimento": "",
+      "telefone": "",
+      "endereco": {
+        "residencial": "",
+        "comercial": ""
+      },
+      "profissao": "",
+      "cidade": "",
+      "bairro": "",
+      "naturalidade": "",
+      "estado": "",
+      "estado_civil": "",
+      "historico_medico": "",
+      "diagnostico": {
+        "clinico": "",
+        "fisioterapeutico": ""
+      },
+      "avaliacao": {
+        "historia_clinica": "",
+        "queixa_principal": "",
+        "habitos_vida": "",
+        "HMA": "",
+        "HMP": ""
+      },
+      "data_anamnese": ""
+    }
+  }
+  
