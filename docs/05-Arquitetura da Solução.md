@@ -1,68 +1,79 @@
 # Arquitetura da Solução
+## Requisitos Funcionais
 
-<span style="color:red">Pré-requisitos: <a href="3-Projeto de Interface.md"> Projeto de Interface</a></span>
+* RF-001	Permitir que o usuário faça agendamento de consultas	
+* RF-002	Permitir que o usuário acompanhe o andamento de suas consultas	
+* RF-003	Permitir que o usuário visualize os exercícios físicos recomendados pelo fisioterapeuta	
+* RF-004	Permitir que o fisioterapeuta visualize os dados do paciente	
+* RF-005	Permitir que o usuário anexa exames	
+* RF-006	Permitir que o usuário visualize sua evolução após a consulta	
+* RF-007	Permitir que o fisioterapeuta visualize todas as consultas marcadas	
+* RF-008	Permitir que o usuário visualize os dias disponíveis da agenda do fisioterapeuta	
+* RF-009	Permitir que o usuário ou o fisioterapeuta faça cancelamento da consulta	
+* RF-010	Permitir que o usuário faça um cadastro no aplicativo	
 
-Definição de como o software é estruturado em termos dos componentes que fazem parte da solução e do ambiente de hospedagem da aplicação.
+## Requisitos não Funcionais
 
-![Arquitetura da Solução](img/02-mob-arch.png)
+* RNF-001	O sistema deve ser responsivo para rodar em um dispositivo móvel	
+* RNF-002	Deve processar os agendamentos no máximo 10 segundos	
+* RNF-003	O sistema deve garantir que todos os dados estejam em conformidade com a LGPD (Lei Geral de Proteção de Dados)	
+* RNF-004	O sistema deve suportar até 500 usuários simultâneos sem manipulação significativa de desempenho	
+  
+## Restrições
 
-## Diagrama de Classes
-
-O diagrama de classes ilustra graficamente como será a estrutura do software, e como cada uma das classes da sua estrutura estarão interligadas. Essas classes servem de modelo para materializar os objetos que executarão na memória.
-
-As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de Classes”.
-
-> - [Diagramas de Classes - Documentação da IBM](https://www.ibm.com/docs/pt-br/rational-soft-arch/9.6.1?topic=diagrams-class)
-> - [O que é um diagrama de classe UML? | Lucidchart](https://www.lucidchart.com/pages/pt/o-que-e-diagrama-de-classe-uml)
-
-## Modelo ER
-
-O Modelo ER representa através de um diagrama como as entidades (coisas, objetos) se relacionam entre si na aplicação interativa.]
-
-As referências abaixo irão auxiliá-lo na geração do artefato “Modelo ER”.
-
-> - [Como fazer um diagrama entidade relacionamento | Lucidchart](https://www.lucidchart.com/pages/pt/como-fazer-um-diagrama-entidade-relacionamento)
-
-## Esquema Relacional
-
-O Esquema Relacional corresponde à representação dos dados em tabelas juntamente com as restrições de integridade e chave primária.
- 
-As referências abaixo irão auxiliá-lo na geração do artefato “Esquema Relacional”.
-
-> - [Criando um modelo relacional - Documentação da IBM](https://www.ibm.com/docs/pt-br/cognos-analytics/10.2.2?topic=designer-creating-relational-model)
-
-## Modelo Físico
-
-Entregar um arquivo banco.sql contendo os scripts de criação das tabelas do banco de dados. Este arquivo deverá ser incluído dentro da pasta src\bd.
-
-## Tecnologias Utilizadas
-
-Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
-
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
-
-## Hospedagem
-
-Explique como a hospedagem e o lançamento da plataforma foi feita.
-
-> **Links Úteis**:
->
-> - [Website com GitHub Pages](https://pages.github.com/)
-> - [Programação colaborativa com Repl.it](https://repl.it/)
-> - [Getting Started with Heroku](https://devcenter.heroku.com/start)
-> - [Publicando Seu Site No Heroku](http://pythonclub.com.br/publicando-seu-hello-world-no-heroku.html)
+* 01	O projeto deverá ser entregue até o final do semestre
+* 02	Não pode ser desenvolvido fora do escopo mobile
+* 03	O projeto deverá ter um banco de dados em nuvem
+* 04	Todos os membros devem ter conhecimentos de tecnologias aplicadas
+* 05	O projeto deve seguir a documentação
 
 ## Qualidade de Software
+ ### 1. Funcionalidade (Adequação Funcional)
+    
+a) Completude Funcional: O software deve cobrir todas as funcionalidades necessárias, como agendamento, visualização de horários, cancelamento e histórico de consultas.
+* Métrica: Percentual de funcionalidades entregues com relação às planejadas (ex.: 90% das funcionalidades planejadas devem estar implementadas).
+  
+b) Correção Funcional: As funcionalidades implementadas devem cumprir com os requisitos e funcionar conforme o esperado.
+* Métrica: Taxa de defeitos encontrados por funcionalidade ou por módulo (ex.: quantidade de bugs por função).
+  
+### 2. Confiabilidade
+   
+a) Tolerância a Falhas: O sistema deve continuar funcionando mesmo em caso de falhas menores, como falha na conexão de rede durante um agendamento.
+* Métrica: Percentual de tempo de inatividade tolerado durante o uso (ex.: 99,5% de disponibilidade).
+  
+b) Maturidade: O número de falhas do sistema deve ser minimizado conforme o sistema amadurece.
+* Métrica: Número médio de falhas por módulo por release.
+  
+### 3. Usabilidade
+a) Apreensibilidade: Facilidade com que os usuários (pacientes e fisioterapeutas) conseguem aprender a usar o sistema, especialmente nas funcionalidades principais.
+* Métrica: Tempo médio para um novo usuário realizar uma ação-chave (ex.: agendar uma consulta).
+  
+b) Operabilidade: O sistema deve ser fácil de operar, permitindo que os usuários executem suas tarefas de forma eficiente.
+* Métrica: Percentual de usuários que conseguem completar uma tarefa sem assistência (ex.: 90% dos usuários completam o agendamento de consulta na primeira tentativa).
 
-Conceituar qualidade de fato é uma tarefa complexa, mas ela pode ser vista como um método gerencial que através de procedimentos disseminados por toda a organização, busca garantir um produto final que satisfaça às expectativas dos stakeholders.
+### 4. Desempenho
+a) Tempo de resposta: A aplicação deve responder rapidamente às interações do usuário, como ao carregar uma agenda de horários.
+* Métrica: Tempo médio de resposta de operações críticas (ex.: menos de 2 segundos para carregar os horários disponíveis).
+  
+b) Capacidade: O sistema deve ser capaz de lidar com uma quantidade crescente de usuários sem perda significativa de desempenho.
+* Métrica: Número máximo de usuários simultâneos suportados sem queda de desempenho.
 
-No contexto de desenvolvimento de software, qualidade pode ser entendida como um conjunto de características a serem satisfeitas, de modo que o produto de software atenda às necessidades de seus usuários. Entretanto, tal nível de satisfação nem sempre é alcançado de forma espontânea, devendo ser continuamente construído. Assim, a qualidade do produto depende fortemente do seu respectivo processo de desenvolvimento.
+### 5. Segurança
+a) Confidencialidade: As informações sensíveis, como dados médicos e pessoais, devem ser protegidas contra acessos não autorizados.
+* Métrica: Percentual de tentativas de acesso bloqueadas com sucesso (ex.: 100% das tentativas não autorizadas são bloqueadas).
 
-A norma internacional ISO/IEC 25010, que é uma atualização da ISO/IEC 9126, define oito características e 30 subcaracterísticas de qualidade para produtos de software.
-Com base nessas características e nas respectivas sub-características, identifique as sub-características que sua equipe utilizará como base para nortear o desenvolvimento do projeto de software considerando-se alguns aspectos simples de qualidade. Justifique as subcaracterísticas escolhidas pelo time e elenque as métricas que permitirão a equipe avaliar os objetos de interesse.
+### 6. Manutenibilidade
+a) Modularidade: O código do sistema deve ser modular, facilitando modificações e atualizações em áreas específicas.
+* Métrica: Tamanho médio dos módulos ou classes e sua independência funcional (medido por acoplamento e coesão).
+  
+b) Facilidade de análise: A capacidade de diagnosticar e corrigir problemas ou realizar melhorias deve ser ágil.
+* Métrica: Tempo médio para localizar e corrigir um defeito (ex.: tempo médio de correção de bugs).
 
-> **Links Úteis**:
->
-> - [ISO/IEC 25010:2011 - Systems and software engineering — Systems and software Quality Requirements and Evaluation (SQuaRE) — System and software quality models](https://www.iso.org/standard/35733.html/)
-> - [Análise sobre a ISO 9126 – NBR 13596](https://www.tiespecialistas.com.br/analise-sobre-iso-9126-nbr-13596/)
-> - [Qualidade de Software - Engenharia de Software 29](https://www.devmedia.com.br/qualidade-de-software-engenharia-de-software-29/18209/)
+### Justificativa das Subcaracterísticas Escolhidas
+
+- Tempo e recursos limitados: A escolha de subcaracterísticas priorizou aspectos essenciais para um software de agendamento, como funcionalidade correta, desempenho adequado, segurança e facilidade de uso, aspectos críticos para qualquer software que lida com dados sensíveis e possui uma base de usuários ampla.
+
+- Qualidade percebida pelo usuário: Usabilidade e desempenho são fundamentais para garantir uma boa experiência de uso. Já segurança é imprescindível para proteção de dados pessoais.
+
+- Facilidade de manutenção: Subcaracterísticas de manutenibilidade ajudam a manter o software atualizado, corrigir problemas rapidamente e adicionar novas funcionalidades conforme o sistema evolui.
+
