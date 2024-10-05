@@ -1,6 +1,4 @@
 # Arquitetura da Solução
-
-<span style="color:red">Pré-requisitos: <a href="3-Projeto de Interface.md"> Projeto de Interface</a></span>
 ![Arquitetura da Solução](img/arquitetura_da_solucao.png)
 
 ## Diagrama de Classes
@@ -10,8 +8,36 @@
 ![banco.json](https://github.com/ICEI-PUC-Minas-PMV-ADS/psg-ads-n-tiam-2024-2-full-life/blob/main/banco.json)
 
 ## Tecnologias Utilizadas
-Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
-Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
+Para o desenvolvimento da aplicação móvel, utilizaremos as seguintes tecnologias:
+
+### 1. **React Native**
+Será a base para o desenvolvimento de uma aplicação *cross-platform*, funcionando em Android e iOS com um único código JavaScript.
+
+### 2. **React**
+Usaremos React para a construção da interface de usuário, garantindo modularidade e reutilização de componentes.
+
+### 3. **Firebase**
+Será o *back-end*, fornecendo autenticação, banco de dados em tempo real e notificações *push*, facilitando o gerenciamento de dados.
+
+### 4. **Visual Studio Code**
+IDE utilizada para o desenvolvimento, com suporte a extensões que otimizam o trabalho com React Native.
+
+### 5. **Node.js e NPM**
+Para gerenciar o ambiente e instalar dependências como React Navigation e Axios.
+
+### 6. **Expo**
+Facilitará o teste e deploy do app, tornando o processo mais ágil.
+
+### 7. **Git e GitHub**
+Para controle de versão e colaboração.
+
+### 8. **Redux (ou Context API)**
+Gerenciará o estado global da aplicação, garantindo dados consistentes.
+
+Este conjunto de ferramentas e serviços garante um desenvolvimento ágil, com foco em performance e escalabilidade.
+
+### Explicação: 
+A interação do usuário com a aplicação ocorre via React Native, que renderiza a interface. A aplicação usa Redux (ou Context API) para gerenciar o estado global. Quando uma ação exige dados do back-end, ela faz uma requisição ao Firebase, que cuida da autenticação, armazenamento e notificações em tempo real. O front-end, utilizando bibliotecas como Axios, recebe a resposta, atualiza o estado e a interface, garantindo uma experiência fluida. Expo facilita testes e deploy, enquanto Git/GitHub assegura controle de versão e colaboração contínua.
 
 ## Qualidade de Software
  ### 1. Funcionalidade (Adequação Funcional)
