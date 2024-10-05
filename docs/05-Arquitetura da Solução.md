@@ -1,31 +1,30 @@
 # Arquitetura da Solução
-## Requisitos Funcionais
 
-* RF-001	Permitir que o usuário faça agendamento de consultas	
-* RF-002	Permitir que o usuário acompanhe o andamento de suas consultas	
-* RF-003	Permitir que o usuário visualize os exercícios físicos recomendados pelo fisioterapeuta	
-* RF-004	Permitir que o fisioterapeuta visualize os dados do paciente	
-* RF-005	Permitir que o usuário anexa exames	
-* RF-006	Permitir que o usuário visualize sua evolução após a consulta	
-* RF-007	Permitir que o fisioterapeuta visualize todas as consultas marcadas	
-* RF-008	Permitir que o usuário visualize os dias disponíveis da agenda do fisioterapeuta	
-* RF-009	Permitir que o usuário ou o fisioterapeuta faça cancelamento da consulta	
-* RF-010	Permitir que o usuário faça um cadastro no aplicativo	
+<span style="color:red">Pré-requisitos: <a href="3-Projeto de Interface.md"> Projeto de Interface</a></span>
+Definição de como o software é estruturado em termos dos componentes que fazem parte da solução e do ambiente de hospedagem da aplicação.
+![Arquitetura da Solução](img/02-mob-arch.png)
 
-## Requisitos não Funcionais
+## Diagrama de Classes
+O diagrama de classes ilustra graficamente como será a estrutura do software, e como cada uma das classes da sua estrutura estarão interligadas. Essas classes servem de modelo para materializar os objetos que executarão na memória.
+As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de Classes”.
+> - [Diagramas de Classes - Documentação da IBM](https://www.ibm.com/docs/pt-br/rational-soft-arch/9.6.1?topic=diagrams-class)
+> - [O que é um diagrama de classe UML? | Lucidchart](https://www.lucidchart.com/pages/pt/o-que-e-diagrama-de-classe-uml)
 
-* RNF-001	O sistema deve ser responsivo para rodar em um dispositivo móvel	
-* RNF-002	Deve processar os agendamentos no máximo 10 segundos	
-* RNF-003	O sistema deve garantir que todos os dados estejam em conformidade com a LGPD (Lei Geral de Proteção de Dados)	
-* RNF-004	O sistema deve suportar até 500 usuários simultâneos sem manipulação significativa de desempenho	
-  
-## Restrições
+## Modelo Físico
+Entregar um arquivo banco.sql contendo os scripts de criação das tabelas do banco de dados. Este arquivo deverá ser incluído dentro da pasta src\bd.
 
-* 01	O projeto deverá ser entregue até o final do semestre
-* 02	Não pode ser desenvolvido fora do escopo mobile
-* 03	O projeto deverá ter um banco de dados em nuvem
-* 04	Todos os membros devem ter conhecimentos de tecnologias aplicadas
-* 05	O projeto deve seguir a documentação
+## Tecnologias Utilizadas
+Descreva aqui qual(is) tecnologias você vai usar para resolver o seu problema, ou seja, implementar a sua solução. Liste todas as tecnologias envolvidas, linguagens a serem utilizadas, serviços web, frameworks, bibliotecas, IDEs de desenvolvimento, e ferramentas.
+Apresente também uma figura explicando como as tecnologias estão relacionadas ou como uma interação do usuário com o sistema vai ser conduzida, por onde ela passa até retornar uma resposta ao usuário.
+
+## Hospedagem
+Explique como a hospedagem e o lançamento da plataforma foi feita.
+> **Links Úteis**:
+>
+> - [Website com GitHub Pages](https://pages.github.com/)
+> - [Programação colaborativa com Repl.it](https://repl.it/)
+> - [Getting Started with Heroku](https://devcenter.heroku.com/start)
+> - [Publicando Seu Site No Heroku](http://pythonclub.com.br/publicando-seu-hello-world-no-heroku.html)
 
 ## Qualidade de Software
  ### 1. Funcionalidade (Adequação Funcional)
@@ -76,4 +75,3 @@ b) Facilidade de análise: A capacidade de diagnosticar e corrigir problemas ou 
 - Qualidade percebida pelo usuário: Usabilidade e desempenho são fundamentais para garantir uma boa experiência de uso. Já segurança é imprescindível para proteção de dados pessoais.
 
 - Facilidade de manutenção: Subcaracterísticas de manutenibilidade ajudam a manter o software atualizado, corrigir problemas rapidamente e adicionar novas funcionalidades conforme o sistema evolui.
-
