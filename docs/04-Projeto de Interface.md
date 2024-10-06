@@ -13,6 +13,6 @@ O diagrama apresenta o estudo do fluxo de interação do usuário com o sistema 
 
 ## Wireframes
 
-![Exemplo de Wireframe](img/wireframe.png)
+![Exemplo de Wireframe](img/wireframes.png)
 
 ![Figma](https://www.figma.com/design/rfTxIohwANKG9h7AdmmI3p/Full-Life?node-id=0-1&node-type=canvas&t=Bw7o1a4GWWILe7YS-0)
