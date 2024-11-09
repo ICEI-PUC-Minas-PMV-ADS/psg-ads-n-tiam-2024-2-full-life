@@ -4,18 +4,16 @@ import { Ionicons } from '@expo/vector-icons';
 
 type TopBarProps = {
   title: string;
-  userName: string;
   onBackPress: () => void;
 };
 
-function TopBar({ title, userName, onBackPress }: TopBarProps) {
+function TopBar({ title, onBackPress }: TopBarProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
         <Ionicons name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.userGreeting}>Olá, {userName}</Text>
     </View>
   );
 }
