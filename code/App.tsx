@@ -1,9 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { ScheduleScreen } from './src/pages/Agendamentos/';
+import { Home } from './src/pages/exampleFirebase/';
 
 export default function App() {
   return (
-    <ScheduleScreen />
+    <Home />
   );
 }
