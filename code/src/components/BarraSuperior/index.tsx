@@ -2,18 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-type TopBarProps = {
-  title: string;
-  onBackPress: () => void;
+type BarraSuperiorProps = {
+  titulo: string;
+  aoPressionarVoltar: () => void;
 };
 
-export function TopBar({ title, onBackPress }: TopBarProps) {
+export function BarraSuperior({ titulo, aoPressionarVoltar }: BarraSuperiorProps) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
+      <TouchableOpacity onPress={aoPressionarVoltar} style={styles.botaoVoltar}>
         <Ionicons name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.titulo}>{titulo}</Text>
     </View>
   );
 }
@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     backgroundColor: '#4CAF50', 
   },
-  backButton: {
+  botaoVoltar: {
     marginRight: 10,
   },
-  title: {
+  titulo: {
     flex: 1,
     fontSize: 20,
     fontWeight: 'bold',
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginRight: 40,
   },
-  userGreeting: {
+  saudacaoUsuario: {
     fontSize: 16,
     color: 'white',
   },

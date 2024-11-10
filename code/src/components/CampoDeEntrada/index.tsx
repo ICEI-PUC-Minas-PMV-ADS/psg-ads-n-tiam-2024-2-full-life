@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Modal, Text, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-interface InputFieldProps {
+interface CampoDeEntradaProps {
   placeholder: string;
   value: string;
   onChangeText: (text: string) => void;
   options: string[];
 }
 
-export function InputField({ placeholder, value, onChangeText, options }: InputFieldProps) {
+export function CampoDeEntrada({ placeholder, value, onChangeText, options }: CampoDeEntradaProps) {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const handleSelectOption = (option: string) => {

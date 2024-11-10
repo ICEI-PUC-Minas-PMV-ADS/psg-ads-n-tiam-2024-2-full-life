@@ -1,26 +1,24 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-interface LinkTextProps {
-  text: string;
-  onPress: () => void;
+interface TextoLinkProps {
+  texto: string;
+  aoPressionar: () => void;
 }
 
-function LinkText({ text, onPress }: LinkTextProps) {
+export function TextoLink({ texto, aoPressionar }: TextoLinkProps) {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Text style={styles.linkText}>{text}</Text>
+    <TouchableOpacity onPress={aoPressionar}>
+      <Text style={styles.textoLink}>{texto}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  linkText: {
+  textoLink: {
     color: '#000000',
     fontSize: 14,
     textAlign: 'center',
     marginTop: 20,
   },
 });
-
-export default LinkText;

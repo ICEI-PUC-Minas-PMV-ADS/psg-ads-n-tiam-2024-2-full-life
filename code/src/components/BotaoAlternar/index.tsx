@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
-interface ToggleButtonProps {
-  options: string[];
-  onSelect: (selected: string) => void;
+interface BotaoAlternarProps {
+  opcoes: string[];
+  aoSelecionar: (selecionado: string) => void;
 }
 
-function ToggleButton({ options, onSelect }: ToggleButtonProps) {
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+export function BotaoAlternar({ opcoes, aoSelecionar }: BotaoAlternarProps) {
+  const [opcaoSelecionada, setOpcaoSelecionada] = useState(opcoes[0]);
 
-  const handlePress = (option: string) => {
-    setSelectedOption(option);
-    onSelect(option);
+  const tratarPressao = (opcao: string) => {
+    setOpcaoSelecionada(opcao);
+    aoSelecionar(opcao);
   };
 
   return (
     <View style={styles.container}>
-      {options.map((option) => (
+      {opcoes.map((opcao) => (
         <TouchableOpacity
-          key={option}
+          key={opcao}
           style={[
-            styles.button,
-            selectedOption === option && styles.selectedButton,
+            styles.botao,
+            opcaoSelecionada === opcao && styles.botaoSelecionado,
           ]}
-          onPress={() => handlePress(option)}
+          onPress={() => tratarPressao(opcao)}
         >
-          <Text style={styles.buttonText}>{option}</Text>
+          <Text style={styles.textoBotao}>{opcao}</Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 15,
   },
-  button: {
+  botao: {
     flex: 1,
     paddingVertical: 10,
     backgroundColor: '#E0E0E0',
@@ -46,13 +46,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 5,
   },
-  selectedButton: {
+  botaoSelecionado: {
     backgroundColor: '#4CAF50',
   },
-  buttonText: {
+  textoBotao: {
     color: 'white',
     fontWeight: 'bold',
   },
 });
 
-export default ToggleButton;

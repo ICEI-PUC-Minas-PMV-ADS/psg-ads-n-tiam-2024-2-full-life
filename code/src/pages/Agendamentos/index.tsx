@@ -1,92 +1,92 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Modal, FlatList, TouchableOpacity } from 'react-native';
-import { TopBar } from '../../components/TopBar';
-import { Calendar } from '../../components/Calendar';
-import { Button } from '../../components/Button';
-import { InputField } from '../../components/InputField';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import { BarraSuperior } from '../../components/BarraSuperior';
+import { Calendario } from '../../components/Calendario';
+import { Botao } from '../../components/Botao';
+import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 
-export default function Scheduling() {
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string>('');
-  const [specialty, setSpecialty] = useState('');
-  const [horario, setHorario] = useState('');
+export default function Agendamento() {
+  const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
+  const [especialidade, setEspecialidade] = useState('');
+  const [horario, setHorario] = useState<string>('');
 
-  const specialties = ['Coluna', 'Quiropraxia', 'Ortopedia', 'Pediatria'];
+  const especialidades = ['Coluna', 'Quiropraxia', 'Ortopedia', 'Pediatria'];
 
-  type datas = {
-    [chave: string]: string[];
-  };
-
-  const agendamentos: { [chave: string]: string[] } = {
+  const agendamentos: { [key: string]: string[] } = {
     '09/09/2024': ['09:00', '10:00', '14:00'],
     '15/09/2024': ['09:00', '10:00', '14:00', '15:00'],
     '16/09/2024': ['08:00', '11:00', '13:00', '16:00'],
-    '17/09/2024': ['09:30', '10:30', '14:30', '15:30']
-  };
-  
-
-  const handleDateTimeChange = (date: Date, time: string) => {
-    setSelectedDate(date);
-    setSelectedTime(time);
+    '17/09/2024': ['09:30', '10:30', '14:30', '15:30'],
   };
 
-  const handleConfirm = () => {
+  const alterarDataHora = (data: Date, hora: string) => {
+    setDataSelecionada(data);
+    setHorario('');
+  };
+
+  const confirmarAgendamento = () => {
     console.log('Agendamento confirmado:', {
-      date: selectedDate,
-      time: selectedTime,
-      specialty,
+      data: dataSelecionada,
+      horario,
+      especialidade,
     });
   };
-  
-  function selectDate(selectDate: Date | null): any {
-    if (!selectDate) {
+
+  const cancelarAgendamento = () => {
+    setDataSelecionada(null); 
+    setEspecialidade('');
+    setHorario('');
+  };
+
+  function selecionarData(data: Date | null): any {
+    if (!data) {
       return []; 
     }
 
-    const day = String(selectDate.getDate()).padStart(2, '0');
-    const month = String(selectDate.getMonth() + 1).padStart(2, '0');
-    const year = selectDate.getFullYear();
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = data.getFullYear();
 
-    const date = `${day}/${month}/${year}`;
+    const dataFormatada = `${dia}/${mes}/${ano}`;
 
-    return agendamentos[date] || [];
+    return agendamentos[dataFormatada] || [];
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <TopBar title="FullLife" onBackPress={() => {}} />
-      <View style={styles.content}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Realizar agendamento:</Text>
+      <BarraSuperior titulo="FullLife" aoPressionarVoltar={() => {}} />
+      <View style={styles.conteudo}>
+        <View style={styles.cabecalho}>
+          <Text style={styles.textoCabecalho}>Realizar agendamento:</Text>
         </View>
 
-        <View style={styles.sectionCalendar}>
-          <Calendar agendamentos={agendamentos} onDateTimeChange={handleDateTimeChange} />
+        <View style={styles.secaoCalendario}>
+          <Calendario agendamentos={agendamentos} aoAlterarDataHora={alterarDataHora} dataSelecionada={dataSelecionada} />
         </View>
 
-        <Text style={styles.headerText}>Selecionar Hora:</Text>
-        <View style={styles.sectionHora}>
-          <InputField
+        <Text style={styles.textoCabecalho}>Selecionar Hora:</Text>
+        <View style={styles.secaoHora}>
+          <CampoDeEntrada
             placeholder="Horários"
             value={horario}
             onChangeText={setHorario}
-            options={selectDate(selectedDate)}
+            options={selecionarData(dataSelecionada)}
           />
         </View>
 
-        <Text style={styles.headerText}>Especialidade:</Text>
-        <View style={styles.sectionSpecialty}>
-          <InputField
+        <Text style={styles.textoCabecalho}>Especialidade:</Text>
+        <View style={styles.secaoEspecialidade}>
+          <CampoDeEntrada
             placeholder="Especialidade"
-            value={specialty}
-            onChangeText={setSpecialty}
-            options={specialties}
+            value={especialidade}
+            onChangeText={setEspecialidade}
+            options={especialidades}
           />
         </View>
 
-        <View style={styles.buttonContainer}>
-          <Button style={styles.buttonCancel} title="Cancelar" onPress={() => {}} textStyle={styles.buttonTextCancel} />
-          <Button style={styles.buttonConfirm} title="Confirmar" onPress={handleConfirm} textStyle={styles.buttonTextConfirm} />
+        <View style={styles.containerBotoes}>
+          <Botao style={styles.botaoCancelar} titulo="Cancelar" onPress={cancelarAgendamento} textStyle={styles.textoBotaoCancelar} />
+          <Botao style={styles.botaoConfirmar} titulo="Confirmar" onPress={confirmarAgendamento} textStyle={styles.textoBotaoConfirmar} />
         </View>
       </View>
     </SafeAreaView>
@@ -98,34 +98,32 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f5f5f5',
   },
-  content: {
+  conteudo: {
     flex: 1,
     padding: 16,
   },
-  header: {
+  cabecalho: {
     marginBottom: 20,
   },
-  headerText: {
+  textoCabecalho: {
     fontSize: 17,
     color: '#333',
   },
-  sectionCalendar: {
+  secaoCalendario: {
     marginBottom: 10,
   },
-  sectionHora: {
-    
-  },
-  sectionSpecialty: {
+  secaoHora: {},
+  secaoEspecialidade: {
     marginBottom: 20,
   },
-  buttonContainer: {
+  containerBotoes: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 30,
     marginBottom: 30,
     gap: 20,
   },
-  buttonCancel: {
+  botaoCancelar: {
     flex: 1,
     backgroundColor: '#FFFFFF',
     borderColor: '#D3D3D3',
@@ -137,7 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 5,
   },
-  buttonConfirm: {
+  botaoConfirmar: {
     flex: 1,
     backgroundColor: '#4CAF50',
     paddingVertical: 25,
@@ -147,12 +145,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginLeft: 5,
   },
-  buttonTextCancel: {
+  textoBotaoCancelar: {
     color: '#000000',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  buttonTextConfirm: {
+  textoBotaoConfirmar: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: 'bold',
