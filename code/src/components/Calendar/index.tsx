@@ -1,126 +1,211 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet } from 'react-native';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 interface CalendarProps {
   agendamentos: { [date: string]: string[] };
   onDateTimeChange: (date: Date, time: string) => void;
 }
 
-function Calendar({ agendamentos, onDateTimeChange }: CalendarProps) {
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+export function Calendar({ agendamentos, onDateTimeChange }: CalendarProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [availableTimes, setAvailableTimes] = useState<string[]>([]);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
+  const getDaysInMonth = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    return new Date(year, month + 1, 0).getDate();
   };
 
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
+  const getFirstDayOfMonth = (date: Date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    return new Date(year, month, 1).getDay();
   };
 
-  const handleDateConfirm = (date: Date) => {
-    const formattedDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
-    
-    if (agendamentos[formattedDate]) {
-      setSelectedDate(date);
-      setAvailableTimes(agendamentos[formattedDate]);
-      setTimePickerVisibility(true);
-    } else {
-      alert("Não há horários disponíveis para esta data.");
+  const handlePrevMonth = () => {
+    setCurrentMonth((prevMonth) => {
+      const year = prevMonth.getFullYear();
+      const month = prevMonth.getMonth();
+      return new Date(year, month - 1, 1);
+    });
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth((prevMonth) => {
+      const year = prevMonth.getFullYear();
+      const month = prevMonth.getMonth();
+      return new Date(year, month + 1, 1);
+    });
+  };
+
+  const renderCalendarHeader = () => {
+    const monthName = currentMonth.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    return (
+      <View style={styles.calendarHeader}>
+        <View style={styles.headerRow}>
+          <TouchableOpacity onPress={handlePrevMonth} style={styles.navButton}>
+            <Text style={styles.navButtonText}>{'<'}</Text>
+          </TouchableOpacity>
+          <Text style={styles.monthTitle}>{monthName.charAt(0).toUpperCase() + monthName.slice(1)}</Text>
+          <TouchableOpacity onPress={handleNextMonth} style={styles.navButton}>
+            <Text style={styles.navButtonText}>{'>'}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.weekDaysRow}>
+          <Text style={styles.weekDay}>S</Text>
+          <Text style={styles.weekDay}>T</Text>
+          <Text style={styles.weekDay}>Q</Text>
+          <Text style={styles.weekDay}>Q</Text>
+          <Text style={styles.weekDay}>S</Text>
+          <Text style={styles.weekDay}>S</Text>
+          <Text style={styles.weekDay}>D</Text>
+        </View>
+      </View>
+    );
+  };
+
+  const renderCalendarDays = () => {
+    const daysInMonth = getDaysInMonth(currentMonth);
+    const firstDayOfMonth = getFirstDayOfMonth(currentMonth);
+    const days = [];
+
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      days.push(<View key={`empty-${i}`} style={styles.dayCell} />);
     }
-    hideDatePicker();
-  };
 
-  const handleTimeSelect = (time: string) => {
-    if (selectedDate) {
-      onDateTimeChange(selectedDate, time);
+    for (let i = 1; i <= daysInMonth; i++) {
+      const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), i);
+      const formattedDate = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      const hasAppointments = agendamentos[formattedDate]?.length > 0;
+
+      days.push(
+        <TouchableOpacity
+          key={i}
+          style={[
+            styles.dayCell,
+            hasAppointments && styles.availableDay,
+            selectedDate?.getDate() === i &&
+              selectedDate?.getMonth() === currentMonth.getMonth() &&
+              selectedDate?.getFullYear() === currentMonth.getFullYear() &&
+              styles.selectedDay,
+          ]}
+          onPress={() => {
+            if (hasAppointments) {
+              setSelectedDate(date);
+              const availableTimes = agendamentos[formattedDate];
+              if (availableTimes && availableTimes.length > 0) {
+                onDateTimeChange(date, availableTimes[0]);
+              }
+            }
+          }}
+        >
+          <Text
+            style={[
+              styles.dayText,
+              hasAppointments && styles.availableDayText,
+              selectedDate?.getDate() === i &&
+                selectedDate?.getMonth() === currentMonth.getMonth() &&
+                selectedDate?.getFullYear() === currentMonth.getFullYear() &&
+                styles.selectedDayText,
+            ]}
+          >
+            {i}
+          </Text>
+        </TouchableOpacity>
+      );
     }
-    setTimePickerVisibility(false);
+
+    return <View style={styles.calendarGrid}>{days}</View>;
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={showDatePicker} style={styles.dateField}>
-        <Text style={styles.dateText}>
-          {selectedDate ? selectedDate.toLocaleDateString('pt-BR') : 'Selecione uma data'}
-        </Text>
-      </TouchableOpacity>
-
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleDateConfirm}
-        onCancel={hideDatePicker}
-      />
-
-      <Modal visible={isTimePickerVisible} transparent animationType="slide">
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Selecione um horário</Text>
-            <FlatList
-              data={availableTimes}
-              keyExtractor={(item) => item}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.timeOption}
-                  onPress={() => handleTimeSelect(item)}
-                >
-                  <Text style={styles.timeText}>{item}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View>
-      </Modal>
+      <View style={styles.calendarContainer}>
+        {renderCalendarHeader()}
+        {renderCalendarDays()}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 10,
-  },
-  dateField: {
-    height: 40,
-    borderColor: '#9E9E9E',
-    borderWidth: 1,
-    borderRadius: 5,
-    justifyContent: 'center',
-    paddingHorizontal: 10,
     backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  dateText: {
-    color: '#000',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: '80%',
-    padding: 20,
+  calendarContainer: {
     backgroundColor: 'white',
-    borderRadius: 10,
+    borderRadius: 8,
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
+  calendarHeader: {
     marginBottom: 10,
   },
-  timeOption: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
   },
-  timeText: {
-    fontSize: 16,
-    color: '#000',
+  monthTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#333',
+  },
+  navButton: {
+    paddingHorizontal: 10,
+  },
+  navButtonText: {
+    fontSize: 18,
+    color: '#000000',
+    fontWeight: 'bold',
+  },
+  weekDaysRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 5,
+  },
+  weekDay: {
+    width: 30,
+    textAlign: 'center',
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '500',
+  },
+  calendarGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  dayCell: {
+    width: '14.28%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dayText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  availableDay: {
+    backgroundColor: '#e8f5e9',
+  },
+  availableDayText: {
+    color: '#4CAF50',
+    fontWeight: '500',
+    paddingBottom: 12,
+  },
+  selectedDay: {
+    backgroundColor: '#4CAF50',
+    borderRadius: 20,
+  },
+  selectedDayText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
-
-export default Calendar;

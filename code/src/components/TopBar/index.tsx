@@ -7,7 +7,7 @@ type TopBarProps = {
   onBackPress: () => void;
 };
 
-function TopBar({ title, onBackPress }: TopBarProps) {
+export function TopBar({ title, onBackPress }: TopBarProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onBackPress} style={styles.backButton}>
@@ -22,7 +22,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 10,
     backgroundColor: '#4CAF50', 
   },
   backButton: {
@@ -34,11 +36,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
+    marginRight: 40,
   },
   userGreeting: {
     fontSize: 16,
     color: 'white',
   },
 });
-
-export default TopBar;
