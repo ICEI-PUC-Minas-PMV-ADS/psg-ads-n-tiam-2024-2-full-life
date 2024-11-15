@@ -1,16 +1,31 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+// src/pages/Agendamento.tsx
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { BarraSuperior } from '../../components/BarraSuperior';
 import { Calendario } from '../../components/Calendario';
 import { Botao } from '../../components/Botao';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
+import { getAllEspecialidades } from '../../services/fisioterapeutaService';
 
 export default function Agendamento() {
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
   const [especialidade, setEspecialidade] = useState('');
   const [horario, setHorario] = useState<string>('');
+  const [especialidades, setEspecialidades] = useState<string[]>([]);
 
-  const especialidades = ['Coluna', 'Quiropraxia', 'Ortopedia', 'Pediatria'];
+  useEffect(() => {
+    const fetchEspecialidades = async () => {
+      try {
+        const especialidadesDoBanco = await getAllEspecialidades();
+        setEspecialidades(especialidadesDoBanco);
+        console.log('Especialidades:', especialidadesDoBanco);
+      } catch (error) {
+        console.error("Erro ao buscar especialidades:", error);
+      }
+    };
+
+    fetchEspecialidades();
+  }, []);
 
   const agendamentos: { [key: string]: string[] } = {
     '09/09/2024': ['09:00', '10:00', '14:00'],
@@ -21,7 +36,7 @@ export default function Agendamento() {
 
   const alterarDataHora = (data: Date, hora: string) => {
     setDataSelecionada(data);
-    setHorario('');
+    setHorario(hora);
   };
 
   const confirmarAgendamento = () => {
@@ -33,20 +48,17 @@ export default function Agendamento() {
   };
 
   const cancelarAgendamento = () => {
-    setDataSelecionada(null); 
+    setDataSelecionada(null);
     setEspecialidade('');
     setHorario('');
   };
 
-  function selecionarData(data: Date | null): any {
-    if (!data) {
-      return []; 
-    }
+  function selecionarData(data: Date | null): string[] {
+    if (!data) return [];
 
     const dia = String(data.getDate()).padStart(2, '0');
     const mes = String(data.getMonth() + 1).padStart(2, '0');
     const ano = data.getFullYear();
-
     const dataFormatada = `${dia}/${mes}/${ano}`;
 
     return agendamentos[dataFormatada] || [];
@@ -56,37 +68,44 @@ export default function Agendamento() {
     <SafeAreaView style={styles.container}>
       <BarraSuperior titulo="FullLife" aoPressionarVoltar={() => {}} />
       <View style={styles.conteudo}>
-        <View style={styles.cabecalho}>
-          <Text style={styles.textoCabecalho}>Realizar agendamento:</Text>
-        </View>
-
+        <Text style={styles.textoCabecalho}>Realizar agendamento:</Text>
         <View style={styles.secaoCalendario}>
-          <Calendario agendamentos={agendamentos} aoAlterarDataHora={alterarDataHora} dataSelecionada={dataSelecionada} />
+          <Calendario
+            agendamentos={agendamentos}
+            aoAlterarDataHora={alterarDataHora}
+            dataSelecionada={dataSelecionada}
+          />
         </View>
 
         <Text style={styles.textoCabecalho}>Selecionar Hora:</Text>
-        <View style={styles.secaoHora}>
-          <CampoDeEntrada
-            placeholder="Horários"
-            value={horario}
-            onChangeText={setHorario}
-            options={selecionarData(dataSelecionada)}
-          />
-        </View>
+        <CampoDeEntrada
+          placeholder="Horários"
+          value={horario}
+          onChangeText={setHorario}
+          options={selecionarData(dataSelecionada)}
+        />
 
         <Text style={styles.textoCabecalho}>Especialidade:</Text>
-        <View style={styles.secaoEspecialidade}>
-          <CampoDeEntrada
-            placeholder="Especialidade"
-            value={especialidade}
-            onChangeText={setEspecialidade}
-            options={especialidades}
-          />
-        </View>
+        <CampoDeEntrada
+          placeholder="Especialidade"
+          value={especialidade}
+          onChangeText={setEspecialidade}
+          options={especialidades}
+        />
 
         <View style={styles.containerBotoes}>
-          <Botao style={styles.botaoCancelar} titulo="Cancelar" onPress={cancelarAgendamento} textStyle={styles.textoBotaoCancelar} />
-          <Botao style={styles.botaoConfirmar} titulo="Confirmar" onPress={confirmarAgendamento} textStyle={styles.textoBotaoConfirmar} />
+          <Botao
+            style={styles.botaoCancelar}
+            titulo="Cancelar"
+            onPress={cancelarAgendamento}
+            textStyle={styles.textoBotaoCancelar}
+          />
+          <Botao
+            style={styles.botaoConfirmar}
+            titulo="Confirmar"
+            onPress={confirmarAgendamento}
+            textStyle={styles.textoBotaoConfirmar}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -102,34 +121,24 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
-  cabecalho: {
-    marginBottom: 20,
-  },
   textoCabecalho: {
     fontSize: 17,
     color: '#333',
-  },
-  secaoCalendario: {
     marginBottom: 10,
   },
-  secaoHora: {},
-  secaoEspecialidade: {
+  secaoCalendario: {
     marginBottom: 20,
   },
   containerBotoes: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 30,
-    marginBottom: 30,
-    gap: 20,
   },
   botaoCancelar: {
     flex: 1,
     backgroundColor: '#FFFFFF',
     borderColor: '#D3D3D3',
     borderWidth: 1,
-    paddingVertical: 25,
-    paddingHorizontal: 20,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
@@ -138,8 +147,6 @@ const styles = StyleSheet.create({
   botaoConfirmar: {
     flex: 1,
     backgroundColor: '#4CAF50',
-    paddingVertical: 25,
-    paddingHorizontal: 20,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',

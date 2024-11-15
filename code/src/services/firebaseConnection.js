@@ -6,7 +6,7 @@ import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
     apiKey: "AIzaSyDvLjMDn7Qh5ozBXSQsnjDSIFxfiNBVWmY",
     authDomain: "fulllife-91682.firebaseapp.com",
-    databaseURL: "https://fulllife-91682-default-rtdb.firebaseio.com",
+    databaseURL: "https://fulllife-91682-default-rtdb.firebaseio.com/",
     projectId: "fulllife-91682",
     storageBucket: "fulllife-91682.appspot.com",
     messagingSenderId: "222656162628",
@@ -19,3 +19,5 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
 export const db = getFirestore(app);
+
+
