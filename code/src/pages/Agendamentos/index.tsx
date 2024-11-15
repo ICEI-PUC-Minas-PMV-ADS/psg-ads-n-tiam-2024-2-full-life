@@ -1,38 +1,44 @@
-// src/pages/Agendamento.tsx
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import { BarraSuperior } from '../../components/BarraSuperior';
 import { Calendario } from '../../components/Calendario';
 import { Botao } from '../../components/Botao';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
-import { getAllEspecialidades } from '../../services/fisioterapeutaService';
+import { getEspecialidades } from '../../services/especialidadeService';
+import fetchAgendamentos from '../../services/fisioterapeutaService'; 
 
 export default function Agendamento() {
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
   const [especialidade, setEspecialidade] = useState('');
   const [horario, setHorario] = useState<string>('');
   const [especialidades, setEspecialidades] = useState<string[]>([]);
+  const [agendamentos, setAgendamentos] = useState<{ [key: string]: string[] }>({});
 
   useEffect(() => {
     const fetchEspecialidades = async () => {
       try {
-        const especialidadesDoBanco = await getAllEspecialidades();
+        const especialidadesDoBanco = await getEspecialidades();
         setEspecialidades(especialidadesDoBanco);
-        console.log('Especialidades:', especialidadesDoBanco);
       } catch (error) {
         console.error("Erro ao buscar especialidades:", error);
       }
     };
 
-    fetchEspecialidades();
-  }, []);
+    // Busca os agendamentos
+    const fetchData = async () => {
+      try {
+        const agendamentosDoBanco = await fetchAgendamentos();
+        if (agendamentosDoBanco) {
+          setAgendamentos(agendamentosDoBanco);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar agendamentos:", error);
+      }
+    };
 
-  const agendamentos: { [key: string]: string[] } = {
-    '09/09/2024': ['09:00', '10:00', '14:00'],
-    '15/09/2024': ['09:00', '10:00', '14:00', '15:00'],
-    '16/09/2024': ['08:00', '11:00', '13:00', '16:00'],
-    '17/09/2024': ['09:30', '10:30', '14:30', '15:30'],
-  };
+    fetchEspecialidades();
+    fetchData();
+  }, []);
 
   const alterarDataHora = (data: Date, hora: string) => {
     setDataSelecionada(data);
@@ -143,6 +149,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 5,
+    height: 70
   },
   botaoConfirmar: {
     flex: 1,
@@ -151,6 +158,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 5,
+    height: 70
   },
   textoBotaoCancelar: {
     color: '#000000',

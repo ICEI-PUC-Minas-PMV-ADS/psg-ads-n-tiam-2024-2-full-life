@@ -1,39 +1,38 @@
-// src/services/fisioterapeutasService.ts
-import { db } from "./firebaseConnection";
-import { collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 
-interface Fisioterapeuta {
-  id: string;
-  nome: string;
-  email: string;
-  senha: string;
-  numero_crefito: string;
-  especialidades: string[];
-  telefone: string;
-  endereco: string;
-  agenda: {
-    data: string[];
-  };
-}
+async function fetchAgendamentos() {
+  const db = getFirestore();
+  const agendamentosMap: { [date: string]: string[] } = {};
 
-export async function getAllEspecialidades(): Promise<string[]> {
   try {
     const fisioterapeutasCollection = collection(db, "Fisioterapeutas");
     const snapshot = await getDocs(fisioterapeutasCollection);
 
-    const especialidades: string[] = [];
-    snapshot.forEach((doc) => {
-      const fisioterapeuta = doc.data() as Fisioterapeuta;
-      fisioterapeuta.especialidades.forEach((especialidade) => {
-        if (!especialidades.includes(especialidade)) {
-          especialidades.push(especialidade);
+    if (snapshot.empty) {
+      return agendamentosMap;
+    }
+
+    snapshot.forEach((document) => {
+      const documentData = document.data();
+      const agendaData = documentData.agenda;
+
+      if (!agendaData) {
+        return;
+      }
+
+      Object.keys(agendaData).forEach((date) => {
+        if (!agendamentosMap[date]) {
+          agendamentosMap[date] = [];
         }
+        agendamentosMap[date] = [...new Set([...agendamentosMap[date], ...agendaData[date]])];
       });
     });
 
-    return especialidades;
+    return agendamentosMap;
   } catch (error) {
-    console.error("Erro ao buscar especialidades: ", error);
-    return [];
+    console.error("Failed to fetch agendamentos: ", error);
+    return null;
   }
 }
+
+export default fetchAgendamentos;
