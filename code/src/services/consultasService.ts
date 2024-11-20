@@ -20,8 +20,8 @@ export async function getConsultas(): Promise<Consulta[]> {
       consultasData.push({
         data_hora: data.data_hora
           ? typeof data.data_hora.toDate === "function"
-            ? data.data_hora.toDate().toISOString() // Para Timestamp
-            : new Date(data.data_hora).toISOString() // Para string
+            ? data.data_hora.toDate().toISOString() 
+            : new Date(data.data_hora).toISOString() 
           : "",
         id_fisioterapeuta: data.id_fisioterapeuta || "",
         id_paciente: data.id_paciente || "",

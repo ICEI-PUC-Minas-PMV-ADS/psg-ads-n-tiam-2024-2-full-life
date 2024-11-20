@@ -29,9 +29,8 @@ export default function AgendamentosMarcados() {
   }, []);
 
   const consultasFiltradas = consultas.filter((consulta) =>
-    (consulta.observacoes?.toLowerCase().includes(search.toLowerCase()) || "") ||
-    (consulta.id_paciente?.toLowerCase().includes(search.toLowerCase()) || "")
-
+    String(consulta.observacoes).toLowerCase().includes(search.toLowerCase()) ||
+    String(consulta.id_paciente).toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -54,8 +53,8 @@ export default function AgendamentosMarcados() {
           keyExtractor={(item, index) => `${item.id_paciente}-${index}`}
           renderItem={({ item }) => (
             <TouchableOpacity style={styles.consultaContainer}>
-              <Text style={styles.consultaTexto}>Consulta: {item.data_hora}</Text>
-              <Text style={styles.consultaTexto}>Paciente: {item.id_paciente}</Text>
+              <Text style={styles.consultaTexto}>Data consulta: {item.data_hora}</Text>
+              <Text style={styles.consultaTexto}>Id do paciente: {item.id_paciente}</Text>
               <Text style={styles.consultaTexto}>Observações: {item.observacoes}</Text>
             </TouchableOpacity>
           )}
