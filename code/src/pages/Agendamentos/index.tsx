@@ -5,7 +5,9 @@ import { Calendario } from '../../components/Calendario';
 import { Botao } from '../../components/Botao';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 import { getEspecialidades } from '../../services/especialidadeService';
-import fetchAgendamentos from '../../services/fisioterapeutaService'; 
+import fetchAgendamentos from '../../services/fisioterapeutaService';
+import { agendarHorario } from '../../services/agendamentoService';
+
 
 export default function Agendamento() {
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
@@ -13,6 +15,7 @@ export default function Agendamento() {
   const [horario, setHorario] = useState<string>('');
   const [especialidades, setEspecialidades] = useState<string[]>([]);
   const [agendamentos, setAgendamentos] = useState<{ [key: string]: string[] }>({});
+
 
   useEffect(() => {
     const fetchEspecialidades = async () => {
@@ -41,16 +44,27 @@ export default function Agendamento() {
   }, []);
 
   const alterarDataHora = (data: Date, hora: string) => {
-    setDataSelecionada(data);
-    setHorario(hora);
+    const [horas, minutos] = hora.split(':').map(Number);
+    const dataComHora = new Date(data);
+    dataComHora.setHours(horas, minutos, 0, 0);
+    setDataSelecionada(dataComHora);
   };
 
-  const confirmarAgendamento = () => {
-    console.log('Agendamento confirmado:', {
-      data: dataSelecionada,
-      horario,
-      especialidade,
-    });
+  const confirmarAgendamento = async () => {
+    if (dataSelecionada && horario && especialidade) {
+      const agendamento = {
+        id_paciente: '1',
+        id_fisioterapeuta: '1',
+        especialidade: especialidade,
+        data_hora: dataSelecionada,
+        status: 'agendado'
+      };
+      try {
+        const resultado = await agendarHorario(agendamento);
+      } catch (error) {
+        console.error('Erro ao agendar horário:', error);
+      }
+    }
   };
 
   const cancelarAgendamento = () => {
@@ -87,10 +101,14 @@ export default function Agendamento() {
         <CampoDeEntrada
           placeholder="Horários"
           value={horario}
-          onChangeText={setHorario}
+          onChangeText={(atualizarHorario) => {
+            setHorario(atualizarHorario);
+            if (dataSelecionada) {
+              alterarDataHora(dataSelecionada, atualizarHorario);
+            }
+          }}
           options={selecionarData(dataSelecionada)}
         />
-
         <Text style={styles.textoCabecalho}>Especialidade:</Text>
         <CampoDeEntrada
           placeholder="Especialidade"
