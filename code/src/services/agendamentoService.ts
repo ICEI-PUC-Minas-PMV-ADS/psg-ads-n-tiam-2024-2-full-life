@@ -1,10 +1,10 @@
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 import { db } from "./firebaseConnection";
 
 type Agendamento = {
   id?: string;
-  id_paciente: string;
-  id_fisioterapeuta: string;
+  id_paciente: number;
+  id_fisioterapeuta: number;
   especialidade: string;
   data_hora: Date;
   status: string;
@@ -16,7 +16,6 @@ export const agendarHorario = async (agendamento: Agendamento) => {
 
     const querySnapshot = await getDocs(agendamentosRef);
     let maiorId = 0;
-    
     querySnapshot.forEach((doc) => {
       const agendamentoData = doc.data();
       const id = parseInt(agendamentoData.id);
@@ -27,13 +26,33 @@ export const agendarHorario = async (agendamento: Agendamento) => {
 
     const novoId = maiorId + 1;
 
+    const pacientesRef = collection(db, "Pacientes");
+    const pacienteQuery = query(pacientesRef, where("id", "==", Number(agendamento.id_paciente)));
+    const pacienteSnapshot = await getDocs(pacienteQuery);
+
+    if (pacienteSnapshot.empty) {
+      throw new Error("Paciente não encontrado");
+    }
+
+    const pacienteData = pacienteSnapshot.docs[0].data();
+
+    const fisioterapeutasRef = collection(db, "Fisioterapeutas");
+    const fisioterapeutaQuery = query(fisioterapeutasRef, where("id", "==", Number(agendamento.id_fisioterapeuta)));
+    const fisioterapeutaSnapshot = await getDocs(fisioterapeutaQuery);
+
+    if (fisioterapeutaSnapshot.empty) {
+      throw new Error("Fisioterapeuta não encontrado");
+    }
+
+    const fisioterapeutaData = fisioterapeutaSnapshot.docs[0].data();
+
     await addDoc(agendamentosRef, {
       id: novoId,
-      id_paciente: agendamento.id_paciente,
-      id_fisioterapeuta: agendamento.id_fisioterapeuta,
+      paciente: pacienteData,
+      fisioterapeuta: fisioterapeutaData,
       especialidade: agendamento.especialidade,
       data_hora: agendamento.data_hora,
-      status: "agendado"
+      status: "agendado",
     });
 
     return { success: true, id: novoId };
