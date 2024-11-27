@@ -53,8 +53,8 @@ export default function Agendamento() {
   const confirmarAgendamento = async () => {
     if (dataSelecionada && horario && especialidade) {
       const agendamento = {
-        id_paciente: '1',
-        id_fisioterapeuta: '1',
+        id_paciente: 1,
+        id_fisioterapeuta: 1,
         especialidade: especialidade,
         data_hora: dataSelecionada,
         status: 'agendado'
