@@ -68,11 +68,12 @@ export default function LoginScreen() {
             <Text style={styles.buttonText}>Entrar</Text>
           </TouchableOpacity>
         </View>
+        
         <TouchableOpacity onPress={() => navigation.navigate("CadastroScreen")}>
-        <Text style={styles.registerContainer}>
-          <Text style={styles.registerPrompt}>Não tem uma conta? </Text>
-          <Text style={styles.registerLink}>Cadastre aqui</Text>
-        </Text>
+          <Text style={styles.registerContainer}>
+            <Text style={styles.registerPrompt}>Não tem uma conta? </Text>
+            <Text style={styles.registerLink}>Cadastre aqui</Text>
+          </Text>
       </TouchableOpacity>
       </View>
     </SafeAreaView>
