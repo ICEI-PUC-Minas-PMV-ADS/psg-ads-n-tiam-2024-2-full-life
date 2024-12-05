@@ -9,7 +9,8 @@ import {
   SafeAreaView,
 } from "react-native";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../services/firebaseConnection";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { auth, db } from "../../services/firebaseConnection";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BarraSuperior } from "../../components/BarraSuperior";
@@ -18,6 +19,7 @@ type RootStackParamList = {
   LoginScreen: undefined;
   CadastroScreen: undefined;
   MenuPaciente: undefined;
+  MenuFisioterapeuta: undefined;
 };
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "LoginScreen">;
@@ -34,8 +36,28 @@ export default function LoginScreen() {
     }
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigation.navigate("MenuPaciente");
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      const fisioterapeutaRef = collection(db, "Fisioterapeutas");
+      const fisioterapeutaQuery = query(fisioterapeutaRef, where("email", "==", email));
+      const fisioterapeutaSnapshot = await getDocs(fisioterapeutaQuery);
+
+      if (!fisioterapeutaSnapshot.empty) {
+        navigation.navigate("MenuFisioterapeuta");
+        return;
+      }
+
+      const pacienteRef = collection(db, "Pacientes");
+      const pacienteQuery = query(pacienteRef, where("email", "==", email));
+      const pacienteSnapshot = await getDocs(pacienteQuery);
+
+      if (!pacienteSnapshot.empty) {
+        navigation.navigate("MenuPaciente");
+        return;
+      }
+
+      Alert.alert("Erro", "Usuário não encontrado no banco de dados.");
     } catch (error) {
       Alert.alert("Erro", "Usuário ou senha inválidos.");
     }
@@ -68,13 +90,13 @@ export default function LoginScreen() {
             <Text style={styles.buttonText}>Entrar</Text>
           </TouchableOpacity>
         </View>
-        
+
         <TouchableOpacity onPress={() => navigation.navigate("CadastroScreen")}>
           <Text style={styles.registerContainer}>
             <Text style={styles.registerPrompt}>Não tem uma conta? </Text>
             <Text style={styles.registerLink}>Cadastre aqui</Text>
           </Text>
-      </TouchableOpacity>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -83,7 +105,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#68b089", 
+    backgroundColor: "#68b089",
   },
   container: {
     flex: 1,
@@ -134,18 +156,16 @@ const styles = StyleSheet.create({
   registerContainer: {
     color: "white",
     fontSize: 14,
-    textAlign: "center", 
+    textAlign: "center",
     marginTop: 20,
   },
-  
   registerPrompt: {
     color: "white",
     textDecorationLine: "none",
   },
-  
   registerLink: {
-    color: "black", 
+    color: "black",
     textDecorationLine: "none",
-    fontWeight: "bold", 
+    fontWeight: "bold",
   },
 });

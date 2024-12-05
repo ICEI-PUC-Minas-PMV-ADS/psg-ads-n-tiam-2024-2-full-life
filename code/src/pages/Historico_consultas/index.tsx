@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, FlatList, SafeAreaView } from 'react-native';
 import { IconButton, Card } from 'react-native-paper';
 import { BarraSuperior } from '../../components/BarraSuperior'; 
 
@@ -22,34 +22,40 @@ export default function HistoricoConsultas() {
   );
 
   return (
-    <View style={styles.container}>
-      <BarraSuperior titulo='FullLife'/>
-      
-      <View style={styles.content}>
-        <Text style={styles.title}>Histórico de consultas</Text>
+    <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+        <BarraSuperior titulo='FullLife'/>
         
-        <View style={styles.searchContainer}>
-          <IconButton icon="magnify" size={20} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Digite o nome do fisioterapeuta"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
+        <View style={styles.content}>
+            <Text style={styles.title}>Histórico de consultas</Text>
+            
+            <View style={styles.searchContainer}>
+            <IconButton icon="magnify" size={20} />
+            <TextInput
+                style={styles.searchInput}
+                placeholder="Digite o nome do fisioterapeuta"
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+            />
+            </View>
+            
+            <FlatList
+            data={consultas}
+            renderItem={renderConsulta}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.list}
+            />
         </View>
-        
-        <FlatList
-          data={consultas}
-          renderItem={renderConsulta}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.list}
-        />
-      </View>
-    </View>
+        </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#fffff",
+  },
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',

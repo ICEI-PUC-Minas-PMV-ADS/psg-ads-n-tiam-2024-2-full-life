@@ -11,7 +11,7 @@ export function ButtonBlock({ title, onPress }: { title: string; onPress: () => 
 const styles = StyleSheet.create({
     buttonBlock: {
       width: 150,
-      height: 100,
+      height: 250,
       backgroundColor: '#4CAF50',
       marginRight: 16,
       borderRadius: 8,

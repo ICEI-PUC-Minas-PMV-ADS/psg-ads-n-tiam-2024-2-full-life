@@ -1,52 +1,58 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Card } from 'react-native-paper';
 import { BarraSuperior } from '../../components/BarraSuperior';
 
 export default function AcompanharConsultas() {
   return (
-    <View style={styles.container}>
-      <BarraSuperior titulo='FullLife' />
-      
-      <View style={styles.content}>
-        <Text style={styles.label}>Paciente</Text>
-        <TextInput style={styles.input} value="Augusto Farfus" editable={false} />
+    <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+        <BarraSuperior titulo='FullLife' />
         
-        <Text style={styles.label}>Data e profissional</Text>
-        <Card style={styles.card}>
-          <Card.Content>
-            <View style={styles.dateContainer}>
-              <View style={styles.dateBox}>
-                <Text style={styles.dateText}>04</Text>
-                <Text style={styles.dateMonth}>Out</Text>
-              </View>
-              <View>
-                <Text style={styles.text}>
-                  Sexta-feira, 04/10/2024 às 10:40
-                </Text>
-                <Text style={styles.text}>
-                  Fisioterapeuta Marcelo Dias
-                </Text>
-                <Text style={styles.text}>
-                  Fisioterapia esportiva
-                </Text>
-              </View>
-            </View>
-          </Card.Content>
-        </Card>
+        <View style={styles.content}>
+            <Text style={styles.label}>Paciente</Text>
+            <TextInput style={styles.input} value="Augusto Farfus" editable={false} />
+            
+            <Text style={styles.label}>Data e profissional</Text>
+            <Card style={styles.card}>
+            <Card.Content>
+                <View style={styles.dateContainer}>
+                <View style={styles.dateBox}>
+                    <Text style={styles.dateText}>04</Text>
+                    <Text style={styles.dateMonth}>Out</Text>
+                </View>
+                <View>
+                    <Text style={styles.text}>
+                    Sexta-feira, 04/10/2024 às 10:40
+                    </Text>
+                    <Text style={styles.text}>
+                    Fisioterapeuta Marcelo Dias
+                    </Text>
+                    <Text style={styles.text}>
+                    Fisioterapia esportiva
+                    </Text>
+                </View>
+                </View>
+            </Card.Content>
+            </Card>
 
-        <Text style={styles.label}>Status</Text>
-        <TextInput style={styles.input} value="Em andamento" editable={false} />
-        
-        <TouchableOpacity style={styles.cancelButton}>
-          <Text style={styles.cancelButtonText}>Cancelar consulta</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+            <Text style={styles.label}>Status</Text>
+            <TextInput style={styles.input} value="Em andamento" editable={false} />
+            
+            <TouchableOpacity style={styles.cancelButton}>
+            <Text style={styles.cancelButtonText}>Cancelar consulta</Text>
+            </TouchableOpacity>
+        </View>
+        </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#fffff",
+  },
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',

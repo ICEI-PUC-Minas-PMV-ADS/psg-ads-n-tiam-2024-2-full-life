@@ -1,108 +1,132 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { BarraSuperior }  from '../../components/BarraSuperior';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native';
+import { BarraSuperior } from '../../components/BarraSuperior';
 import { ButtonBlock } from '../../components/BotaoNavigation';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { getNomePaciente } from '../../services/pacienteService';
 
 type RootStackParamList = {
     MenuPaciente: undefined;
     Agendamentos: undefined;
     AcompanharConsultas: undefined;
     HistoricoConsultas: undefined;
-  };
-  
-  type MenuPacienteNavigationProps = NativeStackNavigationProp<RootStackParamList, "MenuPaciente">;
+};
+
+type MenuPacienteNavigationProps = NativeStackNavigationProp<RootStackParamList, "MenuPaciente">;
 
 export default function MenuPaciente() {
     const navigation = useNavigation<MenuPacienteNavigationProps>();
 
-  return (
-    <View style={styles.container}>
-      <BarraSuperior titulo='FullLife' />
+    const [searchQuery, setSearchQuery] = useState('');
+    const [userName, setUserName] = useState<string | null>(null);
 
-      <View style={styles.greetingContainer}>
-        <Text style={styles.greetingText}>Olá, Paciente</Text>
-        <View style={styles.searchBar}>
-          <Text style={styles.searchIcon}>🔍</Text>
-        </View>
-      </View>
+    const items = [
+        { title: "Realizar Agendamento", navigation: "Agendamentos" },
+        { title: "Acompanhar Consultas", navigation: "AcompanharConsultas" },
+        { title: "Histórico de Consultas", navigation: "HistoricoConsultas" },
+        { title: "Exercícios Recomendados", navigation: "AcompanharConsultas" },
+        { title: "Anamnese", navigation: "HistoricoConsultas" },
+    ];
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContainer}
-      >
-        <ButtonBlock
-          title="Realizar Agendamento"
-          onPress={() => navigation.navigate("Agendamentos")}
-        />
-        <ButtonBlock
-          title="Exercícios recomendados"
-          onPress={() => navigation.navigate("AcompanharConsultas")}
-        />
-        <ButtonBlock
-          title="Anamnese"
-          onPress={() => navigation.navigate('HistoricoConsultas')}
-        />
-      </ScrollView>
+    const filteredItems = items.filter(item =>
+        item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
-      <View style={styles.additionalContent}>
-        <Text>Additional Content Here</Text>
-      </View>
-    </View>
-  );
+    useEffect(() => {
+        const fetchUserName = async () => {
+            try {
+                const nomePaciente = await getNomePaciente();
+                setUserName(nomePaciente || 'Paciente');
+            } catch (error) {
+                console.error("Erro ao buscar nome do paciente:", error);
+                setUserName('Paciente');
+            }
+        };
+
+        fetchUserName();
+    }, []);
+
+    return (
+        <SafeAreaView style={styles.safeArea}>
+            <View style={styles.container}>
+                <BarraSuperior titulo='FullLife' />
+
+                <View style={styles.greetingContainer}>
+                    <Text style={styles.greetingText}>Olá, {userName}</Text>
+                    <View style={styles.searchBar}>
+                        <TextInput
+                            style={styles.searchInput}
+                            placeholder="🔍 Pesquisar..."
+                            value={searchQuery}
+                            onChangeText={text => setSearchQuery(text)}
+                        />
+                    </View>
+                </View>
+
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={true}
+                    contentContainerStyle={styles.scrollContainer}
+                >
+                    {filteredItems.map((item, index) => (
+                        <ButtonBlock
+                            key={index}
+                            title={item.title}
+                            onPress={() => navigation.navigate(item.navigation as keyof RootStackParamList)}
+                        />
+                    ))}
+                </ScrollView>
+
+                <View style={styles.additionalContent}>
+                    <Text>Additional Content Here</Text>
+                </View>
+            </View>
+        </SafeAreaView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#E0E0E0',
-  },
-  greetingContainer: {
-    padding: 16,
-    backgroundColor: '#FFFFFF',
-  },
-  greetingText: {
-    fontSize: 18,
-    marginBottom: 8,
-  },
-  searchBar: {
-    height: 40,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 8,
-    justifyContent: 'center',
-    paddingHorizontal: 8,
-  },
-  searchIcon: {
-    fontSize: 18,
-    color: '#888888',
-  },
-  scrollContainer: {
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    paddingVertical: 16,
-  },
-  buttonBlock: {
-    width: 150,
-    height: 100,
-    backgroundColor: '#4CAF50',
-    marginRight: 16,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-  additionalContent: {
-    flex: 1,
-    margin: 16,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    safeArea: {
+        flex: 1,
+        backgroundColor: "#fffff",
+    },
+    container: {
+        flex: 1,
+        backgroundColor: '#E0E0E0',
+    },
+    greetingContainer: {
+        padding: 16,
+        backgroundColor: '#FFFFFF',
+    },
+    greetingText: {
+        fontSize: 18,
+        marginBottom: 8,
+    },
+    searchBar: {
+        height: 40,
+        backgroundColor: '#F5F5F5',
+        borderRadius: 8,
+        justifyContent: 'center',
+        paddingHorizontal: 8,
+    },
+    searchInput: {
+        height: '100%',
+        fontSize: 16,
+        color: '#000',
+    },
+    scrollContainer: {
+        paddingHorizontal: 16,
+        flexDirection: 'row',
+        paddingVertical: 16,
+    },
+    additionalContent: {
+        flex: 4,
+        margin: 16,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
