@@ -5,9 +5,8 @@ import { Calendario } from '../../components/Calendario';
 import { Botao } from '../../components/Botao';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 import { getEspecialidades } from '../../services/especialidadeService';
-import fetchAgendamentos from '../../services/fisioterapeutaService';
+import { fetchAgendamentos } from '../../services/fisioterapeutaService';
 import { agendarHorario } from '../../services/agendamentoService';
-
 
 export default function Agendamento() {
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
@@ -86,7 +85,7 @@ export default function Agendamento() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <BarraSuperior titulo="FullLife" aoPressionarVoltar={() => {}} />
+      <BarraSuperior titulo="FullLife"/>
       <View style={styles.conteudo}>
         <Text style={styles.textoCabecalho}>Realizar agendamento:</Text>
         <View style={styles.secaoCalendario}>

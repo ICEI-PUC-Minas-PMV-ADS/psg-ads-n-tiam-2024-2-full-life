@@ -1,7 +1,8 @@
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, setDoc } from "firebase/firestore";
 
-async function fetchAgendamentos() {
-  const db = getFirestore();
+const db = getFirestore();
+
+export async function fetchAgendamentos() {
   const agendamentosMap: { [date: string]: string[] } = {};
 
   try {
@@ -35,4 +36,13 @@ async function fetchAgendamentos() {
   }
 }
 
-export default fetchAgendamentos;
+export async function saveFisioterapeuta(data: any) {
+  try {
+    const fisioterapeutaRef = doc(collection(db, "Fisioterapeutas"), data.id);
+    await setDoc(fisioterapeutaRef, data);
+    console.log("Fisioterapeuta cadastrado com sucesso!");
+  } catch (error) {
+    console.error("Erro ao salvar fisioterapeuta:", error);
+    throw error;
+  }
+}

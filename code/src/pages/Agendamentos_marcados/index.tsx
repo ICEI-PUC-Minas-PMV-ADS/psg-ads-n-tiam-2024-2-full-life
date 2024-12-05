@@ -35,7 +35,7 @@ export default function AgendamentosMarcados() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <BarraSuperior titulo="FullLife" aoPressionarVoltar={() => {}} />
+      <BarraSuperior titulo="FullLife" />
       <View style={styles.conteudo}>
         <Text style={styles.textoCabecalho}>Consultas</Text>
         <View style={styles.inputContainer}>

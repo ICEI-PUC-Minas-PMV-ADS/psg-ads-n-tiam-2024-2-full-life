@@ -1,16 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 type BarraSuperiorProps = {
   titulo: string;
-  aoPressionarVoltar: () => void;
 };
 
-export function BarraSuperior({ titulo, aoPressionarVoltar }: BarraSuperiorProps) {
+export function BarraSuperior({ titulo }: BarraSuperiorProps) {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={aoPressionarVoltar} style={styles.botaoVoltar}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.botaoVoltar}
+      >
         <Ionicons name="arrow-back" size={24} color="white" />
       </TouchableOpacity>
       <Text style={styles.titulo}>{titulo}</Text>
@@ -25,7 +30,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 20,
     paddingLeft: 10,
-    backgroundColor: '#4CAF50', 
+    backgroundColor: '#4CAF50',
   },
   botaoVoltar: {
     marginRight: 10,
@@ -37,9 +42,5 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginRight: 40,
-  },
-  saudacaoUsuario: {
-    fontSize: 16,
-    color: 'white',
   },
 });
