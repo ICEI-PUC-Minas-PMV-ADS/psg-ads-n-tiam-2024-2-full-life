@@ -13,7 +13,6 @@ import { useNavigation } from "@react-navigation/native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { savePaciente } from "../../services/pacienteService";
 import { saveFisioterapeuta } from "../../services/fisioterapeutaService";
-import { BarraSuperior } from "../../components/BarraSuperior";
 
 export default function CadastroScreen() {
   const [tipoCadastro, setTipoCadastro] = useState<"Paciente" | "Fisioterapeuta">("Paciente");
@@ -61,7 +60,7 @@ export default function CadastroScreen() {
       }
 
       Alert.alert("Sucesso", "Cadastro realizado com sucesso!");
-      navigation.navigate("Login" as never);
+      navigation.navigate("LoginScreen" as never);
     } catch (error) {
       console.error(error);
       Alert.alert("Erro", "Não foi possível realizar o cadastro.");
@@ -70,7 +69,6 @@ export default function CadastroScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <BarraSuperior titulo="FullLife" />
       <View style={styles.container}>
         <Text style={styles.title}>Cadastro</Text>
         <View style={styles.switchContainer}>
