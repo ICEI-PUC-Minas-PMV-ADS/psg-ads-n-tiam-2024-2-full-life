@@ -7,6 +7,9 @@ import MenuPaciente from "./src/pages/MenuPaciente";
 import AcompanharConsultas from "./src/pages/Acompanhar_consultas";
 import Agendamento from "./src/pages/Agendamentos";
 import HistoricoConsultas from "./src/pages/Historico_consultas";
+import CondutasPaciente from "./src/pages/Exercicios_paciente";
+import CadastroCondutas from "./src/pages/Cadastro_exercicios";
+import AdicionarTratamentos from "./src/pages/Adicionar_exercicios";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +28,9 @@ export default function App() {
         <Stack.Screen name="AcompanharConsultas" component={AcompanharConsultas} />
         <Stack.Screen name="Agendamentos" component={Agendamento} />
         <Stack.Screen name="HistoricoConsultas" component={HistoricoConsultas} />
+        <Stack.Screen name="CondutasPaciente" component={CondutasPaciente} />
+        <Stack.Screen name="CadastroCondutas" component={CadastroCondutas} />
+        <Stack.Screen name="AdicionarTratamentos" component={AdicionarTratamentos} />
       </Stack.Navigator>
     </NavigationContainer>
   );

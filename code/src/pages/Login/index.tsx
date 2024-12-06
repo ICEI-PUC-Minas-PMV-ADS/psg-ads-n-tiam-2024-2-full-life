@@ -65,7 +65,6 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <BarraSuperior titulo="FullLife" />
       <View style={styles.container}>
         <Text style={styles.title}>Login</Text>
         <View style={styles.form}>
