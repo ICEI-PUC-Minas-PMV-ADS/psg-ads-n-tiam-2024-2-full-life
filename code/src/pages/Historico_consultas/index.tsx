@@ -1,18 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, FlatList, SafeAreaView } from 'react-native';
 import { IconButton, Card } from 'react-native-paper';
 import { BarraSuperior } from '../../components/BarraSuperior'; 
+import { getId } from '../../services/pacienteService';
+import { getConsultasByPatientId } from '../../services/consultasService';
+import { getNomeFisioterapeuta } from '../../services/fisioterapeutaService';
 
 export default function HistoricoConsultas() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [consultas, setConsultas] = useState([
-    { id: '1', texto: 'Consulta 04/10/2024 às 10:40\nFisioterapeuta: Marcelo Dias' },
-    { id: '2', texto: 'Consulta 2' },
-    { id: '3', texto: 'Consulta 3' },
-    { id: '4', texto: 'Consulta 4' },
-    { id: '5', texto: 'Consulta 5' },
-  ]);
+  const [consultas, setConsultas] = useState<Array<{ id: string; texto: string }>>([]);
 
+  const filteredConsultas = consultas.filter((consulta) =>
+    consulta.texto.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const idPaciente = await getId();
+  
+        if (idPaciente) {
+          const consultasDoBanco = await getConsultasByPatientId(idPaciente);
+
+          const consultasFormatadas = await Promise.all(
+            consultasDoBanco.map(async (consulta) => {
+              const nomeFisioterapeuta = await getNomeFisioterapeuta(consulta.id_fisioterapeuta);
+  
+              return {
+                id: String(consulta.id),
+                texto: `Consulta ${new Date(consulta.data_hora).toLocaleDateString()} às ${new Date(consulta.data_hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}\n` +
+                       `Fisioterapeuta: ${nomeFisioterapeuta}\n` +
+                       `Observações: ${consulta.observacoes}`,
+              };
+            })
+          );
+  
+          setConsultas(consultasFormatadas || []);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar consultas:', error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
   const renderConsulta = ({ item }: { item: { id: string; texto: string } }) => (
     <Card style={styles.card}>
       <Card.Content>
@@ -23,30 +55,30 @@ export default function HistoricoConsultas() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-        <View style={styles.container}>
+      <View style={styles.container}>
         <BarraSuperior titulo='FullLife'/>
         
         <View style={styles.content}>
-            <Text style={styles.title}>Histórico de consultas</Text>
-            
-            <View style={styles.searchContainer}>
+          <Text style={styles.title}>Histórico de consultas</Text>
+          
+          <View style={styles.searchContainer}>
             <IconButton icon="magnify" size={20} />
             <TextInput
-                style={styles.searchInput}
-                placeholder="Digite o nome do fisioterapeuta"
-                value={searchQuery}
-                onChangeText={setSearchQuery}
+              style={styles.searchInput}
+              placeholder="Digite o nome do fisioterapeuta"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
             />
-            </View>
-            
-            <FlatList
-            data={consultas}
+          </View>
+          
+          <FlatList
+            data={filteredConsultas} 
             renderItem={renderConsulta}
             keyExtractor={(item) => item.id}
             contentContainerStyle={styles.list}
-            />
+          />
         </View>
-        </View>
+      </View>
     </SafeAreaView>
   );
 }
