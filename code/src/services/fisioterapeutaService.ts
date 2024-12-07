@@ -1,4 +1,4 @@
-import { getFirestore, collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
+import { getFirestore, collection, getDocs, doc, setDoc, getDoc, query, where, limit } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 const db = getFirestore();
 
@@ -52,6 +52,4 @@ export async function fetchAgendamentos(): Promise<{ [date: string]: string[] }>
     throw error;
   }
 };
-
-
 

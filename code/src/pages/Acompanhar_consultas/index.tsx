@@ -1,41 +1,87 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, SafeAreaView, Alert } from 'react-native';
 import { Card } from 'react-native-paper';
 import { BarraSuperior } from '../../components/BarraSuperior';
-import { getLoggedInPatient } from '../../services/pacienteService';
-import { getProximoAgendamento } from '../../services/agendamentoService';
+import { getProximoAgendamento, deleteAgendamento } from '../../services/agendamentoService';
+import { getId, getNomePaciente } from '../../services/pacienteService';
+import { getNomeFisioterapeuta } from '../../services/fisioterapeutaService';
 
 export default function AcompanharConsultas() {
   const [userName, setUserName] = useState<string | null>(null);
   const [agendamento, setAgendamento] = useState<any | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [data_hora, setDataHora] = useState<string | null>(null);
+  const [nomeFisioterapeuta, setNomeFisioterapeuta] = useState<string | null>(null);
+  const [especialidade, setEspecialidade] = useState<string | null>(null);
+  const [statusAgendamento, setStatusAgendamento] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserId = async () => {
       try {
-        const pacienteLogado = await getLoggedInPatient();
-
-        if (pacienteLogado) {
-          setUserName(pacienteLogado.nome || 'Paciente');
-
-          const proximoAgendamento = await getProximoAgendamento(pacienteLogado.id);
-          if (proximoAgendamento) {
-            setAgendamento({
-              ...proximoAgendamento,
-              data_hora: proximoAgendamento.data_hora.toDate(), 
-            });
-          } else {
-            setAgendamento(null);
-          }
-        } else {
-          console.warn("Paciente não encontrado.");
-        }
+        const idPaciente = await getId();
+        setUserId(idPaciente || 0);
       } catch (error) {
-        console.error('Erro ao carregar dados:', error);
+        console.error("Erro ao buscar ID do paciente:", error);
+        setUserId(0);
       }
     };
+  
+    fetchUserId();
+}, []);
+  
+  
 
-    fetchData();
-  }, []);
+useEffect(() => {
+    const fetchUserName = async () => {
+        if (userId) { 
+            try {
+                const nomePaciente = await getNomePaciente(userId);
+                setUserName(nomePaciente || 'Paciente');
+            } catch (error) {
+                console.error("Erro ao buscar nome do paciente:", error);
+                setUserName('Paciente');
+            }
+        }
+    };
+
+    fetchUserName();
+}, [userId]);
+
+const fetchProximoAgendamento = async () => {
+  if (userId) { 
+    try {
+      const agendamentoData = await getProximoAgendamento(userId);
+      setAgendamento(agendamentoData);
+
+      if (agendamentoData) {
+        setDataHora(agendamentoData.data_hora);
+        setEspecialidade(agendamentoData.especialidade);
+        setStatusAgendamento(agendamentoData.status);
+
+        const nomeFisio = await getNomeFisioterapeuta(agendamentoData.id_fisioterapeuta);
+        setNomeFisioterapeuta(nomeFisio || 'Fisioterapeuta não encontrado');
+
+        setAgendamento(agendamentoData);
+      } else {
+        setAgendamento(null);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar próximo agendamento:', error);
+      setAgendamento(null);
+    }
+  }
+};
+
+useEffect(() => {
+  fetchProximoAgendamento();
+}, [userId]);
+
+function deletarAgendamento() {
+  deleteAgendamento(agendamento.id || 0);
+  fetchProximoAgendamento();
+  Alert.alert('Agendamento cancelado com sucesso!'); 
+}
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -54,15 +100,15 @@ export default function AcompanharConsultas() {
                   <>
                     <View style={styles.dateBox}>
                       <Text style={styles.dateText}>
-                        {new Date(agendamento.data_hora).getDate()}
+                        {new Date(data_hora || '').getDate()}
                       </Text>
                       <Text style={styles.dateMonth}>
-                        {new Date(agendamento.data_hora).toLocaleString('default', { month: 'short' })}
+                        {new Date(data_hora || '').toLocaleString('default', { month: 'short' })}
                       </Text>
                     </View>
                     <View>
                       <Text style={styles.text}>
-                        {new Date(agendamento.data_hora).toLocaleDateString('pt-BR', {
+                        {new Date(data_hora || '').toLocaleDateString('pt-BR', {
                           weekday: 'long',
                           day: '2-digit',
                           month: '2-digit',
@@ -71,7 +117,8 @@ export default function AcompanharConsultas() {
                           minute: '2-digit',
                         })}
                       </Text>
-                      <Text style={styles.text}>Fisioterapeuta {agendamento.id_fisioterapeuta}</Text>
+                      <Text style={styles.text}>Fisioterapeuta: {nomeFisioterapeuta}</Text>
+                      <Text style={styles.text}>Especialidade: {especialidade}</Text>
                     </View>
                   </>
                 ) : (
@@ -81,14 +128,15 @@ export default function AcompanharConsultas() {
             </Card.Content>
           </Card>
 
+
           <Text style={styles.label}>Status</Text>
           <TextInput
             style={styles.input}
-            value={agendamento?.status ?? 'Sem agendamento'}
+            value={statusAgendamento ?? 'Sem agendamento'}
             editable={false}
           />
 
-          <TouchableOpacity style={styles.cancelButton}>
+          <TouchableOpacity style={styles.cancelButton} onPress={deletarAgendamento}>
             <Text style={styles.cancelButtonText}>Cancelar consulta</Text>
           </TouchableOpacity>
         </View>

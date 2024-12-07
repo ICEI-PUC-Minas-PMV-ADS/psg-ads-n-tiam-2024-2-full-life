@@ -9,16 +9,16 @@ import { getNomePaciente } from '../../services/pacienteService';
 import { getId } from '../../services/pacienteService';
 
 type RootStackParamList = {
-    MenuPaciente: undefined;
+    MenuFisioterapeuta: undefined;
     Agendamentos: undefined;
     AcompanharConsultas: undefined;
     HistoricoConsultas: undefined;
 };
 
-type MenuPacienteNavigationProps = NativeStackNavigationProp<RootStackParamList, "MenuPaciente">;
+type MenuFisioterapeutaNavigationProps = NativeStackNavigationProp<RootStackParamList, "MenuFisioterapeuta">;
 
-export default function MenuPaciente() {
-    const navigation = useNavigation<MenuPacienteNavigationProps>();
+export default function MenuFisioterapeuta() {
+    const navigation = useNavigation<MenuFisioterapeutaNavigationProps>();
 
     const [searchQuery, setSearchQuery] = useState('');
     const [userName, setUserName] = useState<string | null>(null);
@@ -76,7 +76,7 @@ export default function MenuPaciente() {
                     <View style={styles.searchBar}>
                         <TextInput
                             style={styles.searchInput}
-                            placeholder="🔍 Pesquisar..."
+                            placeholder="🔍 Pesquisar... fisioterapeuta"
                             value={searchQuery}
                             onChangeText={text => setSearchQuery(text)}
                         />

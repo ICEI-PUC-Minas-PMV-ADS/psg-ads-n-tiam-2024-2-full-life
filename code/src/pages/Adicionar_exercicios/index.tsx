@@ -97,48 +97,54 @@ export default function AdicionarExercicios() {
   
 
   return (
-    <View style={styles.container}>
-      <BarraSuperior titulo="FullLife" />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <BarraSuperior titulo="FullLife" />
 
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Text style={styles.title}>Condutas de Tratamento</Text>
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <Text style={styles.title}>Condutas de Tratamento</Text>
 
-        <Text style={styles.label}>Selecionar anatomia humana</Text>
-        <CampoDeEntrada
-          placeholder="Selecione a anatomia"
-          value={anatomia}
-          onChangeText={setAnatomia}
-          options={anatomias}
-        />
+          <Text style={styles.label}>Selecionar anatomia humana</Text>
+          <CampoDeEntrada
+            placeholder="Selecione a anatomia"
+            value={anatomia}
+            onChangeText={setAnatomia}
+            options={anatomias}
+          />
 
-        <Text style={styles.label}>Selecionar o exercício desejado</Text>
-        <CampoDeEntrada
-          placeholder="Selecione o exercício"
-          value={exercicio}
-          onChangeText={handleExercicioChange}
-          options={exercicios.map((ex) => ex.Nome)}
-        />
+          <Text style={styles.label}>Selecionar o exercício desejado</Text>
+          <CampoDeEntrada
+            placeholder="Selecione o exercício"
+            value={exercicio}
+            onChangeText={handleExercicioChange}
+            options={exercicios.map((ex) => ex.Nome)}
+          />
 
-        <Text style={styles.label}>Observações</Text>
-        <View style={styles.observacoesBox}>
-          <Text style={styles.observacoesText}>
-            {observacoes || 'Nenhuma observação disponível.'}
-          </Text>
-        </View>
+          <Text style={styles.label}>Observações</Text>
+          <View style={styles.observacoesBox}>
+            <Text style={styles.observacoesText}>
+              {observacoes || 'Nenhuma observação disponível.'}
+            </Text>
+          </View>
 
-        <TouchableOpacity style={styles.buttonCadastrar} onPress={handleAdicionarRecomendacao}>
-          <Text style={styles.buttonText}>Adicionar exercício</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.buttonCadastrar} onPress={handleAdicionarRecomendacao}>
+            <Text style={styles.buttonText}>Adicionar exercício</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonRegistrarNovo} onPress={() => navigation.navigate('CadastroExercicios' as never)}>
-          <Text style={styles.buttonText}>Registrar novo exercício</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
+          <TouchableOpacity style={styles.buttonRegistrarNovo} onPress={() => navigation.navigate('CadastroExercicios' as never)}>
+            <Text style={styles.buttonText}>Registrar novo exercício</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#fffff",
+  },
   container: {
     flex: 1,
     backgroundColor: '#f0f0f0',

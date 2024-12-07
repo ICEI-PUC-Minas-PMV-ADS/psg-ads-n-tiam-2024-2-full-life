@@ -27,6 +27,7 @@
     "react-native-reanimated": "~3.16.1",
     "react-native-safe-area-context": "^4.12.0",
     "react-native-screens": "~4.1.0",
+    "react-native-text-input-mask": "^3.2.0",
     "react-native-vector-icons": "^10.2.0",
     "react-native-web": "~0.19.13"
   },
@@ -35,7 +36,7 @@
     "@types/firebase": "^2.4.32",
     "@types/react": "~18.3.12",
     "@types/react-native": "^0.73.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.7.2"
   },
   "private": true
 }

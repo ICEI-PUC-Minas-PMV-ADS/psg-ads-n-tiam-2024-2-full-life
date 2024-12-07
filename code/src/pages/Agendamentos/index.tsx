@@ -7,7 +7,7 @@ import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 import { getEspecialidades } from '../../services/especialidadeService';
 import { fetchAgendamentos } from '../../services/fisioterapeutaService';
 import { agendarHorario } from '../../services/agendamentoService';
-import { getPatientId } from '../../services/pacienteService';
+import { getId } from '../../services/pacienteService';
 
 export default function Agendamento() {
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
@@ -16,6 +16,17 @@ export default function Agendamento() {
   const [especialidades, setEspecialidades] = useState<string[]>([]);
   const [agendamentos, setAgendamentos] = useState<{ [key: string]: string[] }>({});
   const [id, setId] = useState<Number>();
+
+  const fetchData = async () => {
+    try {
+      const agendamentosDoBanco = await fetchAgendamentos();
+      if (agendamentosDoBanco) {
+        setAgendamentos(agendamentosDoBanco);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar agendamentos:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchEspecialidades = async () => {
@@ -27,20 +38,9 @@ export default function Agendamento() {
       }
     };
 
-    const fetchData = async () => {
-      try {
-        const agendamentosDoBanco = await fetchAgendamentos();
-        if (agendamentosDoBanco) {
-          setAgendamentos(agendamentosDoBanco);
-        }
-      } catch (error) {
-        console.error("Erro ao buscar agendamentos:", error);
-      }
-    };
-
     const fetchId = async () => {
       try {
-        const idPaciente = await getPatientId();
+        const idPaciente = await getId();
         if (idPaciente) {
           setId(idPaciente);
         }
@@ -78,6 +78,8 @@ export default function Agendamento() {
             "Seu agendamento foi realizado com sucesso!",
             [{ text: "OK" }]
           );
+
+          await fetchData();
           cancelarAgendamento();
         } else {
           throw new Error(resultado.error as string);

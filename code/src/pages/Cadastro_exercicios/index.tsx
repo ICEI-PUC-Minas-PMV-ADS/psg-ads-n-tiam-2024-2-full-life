@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, SafeAreaView } from 'react-native';
 import { BarraSuperior } from '../../components/BarraSuperior';
 import { listarAnatomias, adicionarExercicio } from '../../services/exerciciosService';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
@@ -36,39 +36,45 @@ export default function CadastroTratamento() {
   };
 
   return (
-    <View style={styles.container}>
-      <BarraSuperior titulo="FullLife" />
-      <View style={styles.card}>
-        <Text style={styles.title}>Cadastrar novo tratamento</Text>
-        <Text style={styles.label}>Selecione a anatomia</Text>
-        <CampoDeEntrada
-          placeholder="Selecione a anatomia"
-          value={anatomia}
-          onChangeText={setAnatomia}
-          options={anatomias}
-        />
-        <Text style={styles.label}>Digite o nome do exercício a ser cadastrado</Text>
-        <TextInput
-          style={styles.input}
-          placeholder=""
-          value={nome}
-          onChangeText={setNome}
-        />
-        <Text style={styles.label}>Observações</Text>
-        <TextInput
-          style={styles.textarea}
-          placeholder=""
-          value={observacoes}
-          onChangeText={setObservacoes}
-          multiline
-        />
-        <Button title="Cadastrar" color="#4CAF50" onPress={handleCadastro} />
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <BarraSuperior titulo="FullLife" />
+        <View style={styles.card}>
+          <Text style={styles.title}>Cadastrar novo tratamento</Text>
+          <Text style={styles.label}>Selecione a anatomia</Text>
+          <CampoDeEntrada
+            placeholder="Selecione a anatomia"
+            value={anatomia}
+            onChangeText={setAnatomia}
+            options={anatomias}
+          />
+          <Text style={styles.label}>Digite o nome do exercício a ser cadastrado</Text>
+          <TextInput
+            style={styles.input}
+            placeholder=""
+            value={nome}
+            onChangeText={setNome}
+          />
+          <Text style={styles.label}>Observações</Text>
+          <TextInput
+            style={styles.textarea}
+            placeholder=""
+            value={observacoes}
+            onChangeText={setObservacoes}
+            multiline
+          />
+          <Button title="Cadastrar" color="#4CAF50" onPress={handleCadastro} />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "#fffff",
+  },
   container: {
     flex: 1,
     backgroundColor: '#f0f0f0',
