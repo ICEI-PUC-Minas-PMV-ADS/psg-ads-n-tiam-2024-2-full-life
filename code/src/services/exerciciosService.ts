@@ -1,5 +1,5 @@
 import { db } from "./firebaseConnection";
-import { collection, addDoc, getDocs, CollectionReference } from "firebase/firestore";
+import { collection, addDoc, getDocs, CollectionReference, doc, updateDoc } from "firebase/firestore";
 
 interface Exercicio {
   id: number;
@@ -100,25 +100,48 @@ export async function listarAnatomias(): Promise<string[]> {
 
 export async function adicionarRecomendacaoExercicio(recommendation: RecomendacaoExercicio): Promise<void> {
   try {
-    const existingRecommendations = (await getDocs(recomendacoesExerciciosCollection)).docs.map(
-      doc => doc.data() as RecomendacaoExercicio
+    const querySnapshot = await getDocs(recomendacoesExerciciosCollection);
+    const recomendacoesExistentes = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      data: doc.data() as RecomendacaoExercicio,
+    }));
+
+    // Verificar se já existe recomendação para o paciente
+    const recomendacaoExistente = recomendacoesExistentes.find(
+      (rec) => rec.data.id_paciente === recommendation.id_paciente
     );
 
-    const lastId = existingRecommendations.reduce(
-      (maxId, currentRecommendation) => Math.max(maxId, currentRecommendation.id ?? 0),
-      0
-    );
+    if (recomendacaoExistente) {
+      // Atualizar o vetor de exercícios existente
+      const exerciciosAtualizados = [
+        ...recomendacaoExistente.data.exercicios,
+        ...recommendation.exercicios.filter(
+          (novo) =>
+            !recomendacaoExistente.data.exercicios.some((existente) => existente.id === novo.id)
+        ),
+      ];
 
-    const newId = lastId + 1;
+      // Criar referência ao documento existente
+      const recomendacaoDocRef = doc(
+        db,
+        "RecomendacoesExercicios",
+        recomendacaoExistente.id
+      );
 
-    const recommendationWithId = {
-      ...recommendation,
-      id: newId,
-    };
+      // Atualizar os exercícios no documento
+      await updateDoc(recomendacaoDocRef, {
+        exercicios: exerciciosAtualizados,
+      });
 
-    await addDoc(recomendacoesExerciciosCollection, recommendationWithId);
+      console.log("Recomendação atualizada com sucesso!");
+    } else {
+      // Criar nova recomendação
+      await addDoc(recomendacoesExerciciosCollection, recommendation);
+      console.log("Nova recomendação adicionada com sucesso!");
+    }
   } catch (error) {
     console.error("Erro ao adicionar recomendação de exercício:", error);
     throw error;
   }
 }
+
