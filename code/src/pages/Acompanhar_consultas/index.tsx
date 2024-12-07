@@ -4,38 +4,43 @@ import { Card } from 'react-native-paper';
 import { BarraSuperior } from '../../components/BarraSuperior';
 import { getLoggedInPatient } from '../../services/pacienteService';
 import { getProximoAgendamento } from '../../services/agendamentoService';
+import { getId } from '../../services/pacienteService';
+import { getNomePaciente } from '../../services/pacienteService';
 
 export default function AcompanharConsultas() {
   const [userName, setUserName] = useState<string | null>(null);
   const [agendamento, setAgendamento] = useState<any | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const pacienteLogado = await getLoggedInPatient();
-
-        if (pacienteLogado) {
-          setUserName(pacienteLogado.nome || 'Paciente');
-
-          const proximoAgendamento = await getProximoAgendamento(pacienteLogado.id);
-          if (proximoAgendamento) {
-            setAgendamento({
-              ...proximoAgendamento,
-              data_hora: proximoAgendamento.data_hora.toDate(), 
-            });
-          } else {
-            setAgendamento(null);
-          }
-        } else {
-          console.warn("Paciente não encontrado.");
+    const fetchUserId = async () => {
+        try {
+            const idPaciente = await getId();
+            setUserId(idPaciente || 0);
+        } catch (error) {
+            console.error("Erro ao buscar ID do paciente:", error);
+            setUserId(0);
         }
-      } catch (error) {
-        console.error('Erro ao carregar dados:', error);
-      }
     };
 
-    fetchData();
-  }, []);
+    fetchUserId();
+}, []); 
+
+useEffect(() => {
+    const fetchUserName = async () => {
+        if (userId) { 
+            try {
+                const nomePaciente = await getNomePaciente(userId);
+                setUserName(nomePaciente || 'Paciente');
+            } catch (error) {
+                console.error("Erro ao buscar nome do paciente:", error);
+                setUserName('Paciente');
+            }
+        }
+    };
+
+    fetchUserName();
+}, [userId]);
 
   return (
     <SafeAreaView style={styles.safeArea}>

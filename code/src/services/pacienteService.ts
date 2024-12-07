@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, collection, setDoc, query, orderBy, limit, getDocs } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, setDoc, query, orderBy, limit, getDocs, where } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const db = getFirestore();
@@ -57,32 +57,67 @@ export async function savePaciente(pacienteData: any) {
   }
 }
 
-export async function getNomePaciente(): Promise<string | null> {
-  const auth = getAuth();
-  const user = auth.currentUser;
-  if (!user) return null;
+export async function getNomePaciente(patientId: number): Promise<string | null> {
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(db, 'Pacientes'), where('id', '==', patientId), limit(1))
+    );
 
-  const pacienteRef = doc(db, "Pacientes", user.uid);
-  const pacienteDoc = await getDoc(pacienteRef);
-  if (!pacienteDoc.exists()) return null;
+    if (querySnapshot.empty) {
+      return null;
+    }
 
-  const { nome } = pacienteDoc.data();
-  return nome || null;
-}
+    const patientData = querySnapshot.docs[0].data();
+    const { nome: patientName } = patientData;
 
-export async function getPatientId(): Promise<number | null> {
-  const { currentUser } = getAuth();
-
-  if (!currentUser) {
+    return patientName || null;
+  } catch (error) {
+    console.error('Erro ao buscar o nome do paciente:', error);
     return null;
   }
-  const patientRef = doc(db, 'Pacientes', currentUser.uid);
+}
 
+export async function getId(): Promise<number | null> {
   try {
-    const patientDoc = await getDoc(patientRef);
-    return patientDoc.exists() ? patientDoc.data()?.id || null : null;
+    const auth = getAuth();
+    const usuarioAtual = auth.currentUser;
+
+    if (!usuarioAtual) {
+      console.log('Nenhum usuário está logado.');
+      return null;
+    }
+
+    const emailUsuario = usuarioAtual.email;
+
+    if (!emailUsuario) {
+      console.log('Usuário não possui um e-mail registrado.');
+      return null;
+    }
+
+    const snapshotPacientes = await getDocs(
+      query(
+        collection(db, 'Pacientes'),
+        where('email', '==', emailUsuario), 
+        limit(1) 
+      )
+    );
+
+    if (snapshotPacientes.empty) {
+      console.log('Paciente não encontrado.');
+      return null;
+    }
+
+    const pacienteData = snapshotPacientes.docs[0].data();
+    const idPaciente = pacienteData.id;
+
+    if (typeof idPaciente !== 'number') {
+      console.log('O atributo "id" não é um número.');
+      return null;
+    }
+
+    return idPaciente;
   } catch (error) {
-    console.error('Erro ao acessar o documento do paciente:', error);
+    console.error('Erro ao obter o atributo "id" do paciente logado:', error);
     return null;
   }
 }

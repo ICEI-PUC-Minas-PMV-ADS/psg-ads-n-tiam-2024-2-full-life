@@ -7,7 +7,7 @@ import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 import { getEspecialidades } from '../../services/especialidadeService';
 import { fetchAgendamentos } from '../../services/fisioterapeutaService';
 import { agendarHorario } from '../../services/agendamentoService';
-import { getPatientId } from '../../services/pacienteService';
+import { getId } from '../../services/pacienteService';
 
 export default function Agendamento() {
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
@@ -40,7 +40,7 @@ export default function Agendamento() {
 
     const fetchId = async () => {
       try {
-        const idPaciente = await getPatientId();
+        const idPaciente = await getId();
         if (idPaciente) {
           setId(idPaciente);
         }

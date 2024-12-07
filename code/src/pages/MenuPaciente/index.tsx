@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getNomePaciente } from '../../services/pacienteService';
+import { getId } from '../../services/pacienteService';
 
 type RootStackParamList = {
     MenuPaciente: undefined;
@@ -21,6 +22,7 @@ export default function MenuPaciente() {
 
     const [searchQuery, setSearchQuery] = useState('');
     const [userName, setUserName] = useState<string | null>(null);
+    const [userId , setUserId] = useState<number | null>(null);
 
     const items = [
         { title: "Realizar Agendamento", navigation: "Agendamentos" },
@@ -35,18 +37,34 @@ export default function MenuPaciente() {
     );
 
     useEffect(() => {
-        const fetchUserName = async () => {
+        const fetchUserId = async () => {
             try {
-                const nomePaciente = await getNomePaciente();
-                setUserName(nomePaciente || 'Paciente');
+                const idPaciente = await getId();
+                setUserId(idPaciente || 0);
             } catch (error) {
-                console.error("Erro ao buscar nome do paciente:", error);
-                setUserName('Paciente');
+                console.error("Erro ao buscar ID do paciente:", error);
+                setUserId(0);
             }
         };
-
+    
+        fetchUserId();
+    }, []); 
+    
+    useEffect(() => {
+        const fetchUserName = async () => {
+            if (userId) { 
+                try {
+                    const nomePaciente = await getNomePaciente(userId);
+                    setUserName(nomePaciente || 'Paciente');
+                } catch (error) {
+                    console.error("Erro ao buscar nome do paciente:", error);
+                    setUserName('Paciente');
+                }
+            }
+        };
+    
         fetchUserName();
-    }, []);
+    }, [userId]);
 
     return (
         <SafeAreaView style={styles.safeArea}>
