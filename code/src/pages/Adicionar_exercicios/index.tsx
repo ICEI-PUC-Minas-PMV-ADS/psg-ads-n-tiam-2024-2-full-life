@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import { BarraSuperior } from '../../components/BarraSuperior';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 import { listarAnatomias, listarExercicios, adicionarExercicio, adicionarRecomendacaoExercicio } from '../../services/exerciciosService';
