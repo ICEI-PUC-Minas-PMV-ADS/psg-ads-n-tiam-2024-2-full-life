@@ -4,8 +4,6 @@ import { BarraSuperior } from '../../components/BarraSuperior';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 import { listarAnatomias, listarExercicios, adicionarExercicio, adicionarRecomendacaoExercicio } from '../../services/exerciciosService';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { getTherapistId } from '../../services/fisioterapeutaService';
 
 export default function AdicionarExercicios() {
   const [anatomias, setAnatomias] = useState<string[]>([]);
@@ -43,43 +41,48 @@ export default function AdicionarExercicios() {
     carregarExercicios();
   }, [anatomia]);
 
-  const handleCadastrarExercicio = async () => {
-    if (!anatomia || !exercicio) {
-      Alert.alert('Atenção', 'Preencha todos os campos obrigatórios.');
-      return;
-    }
-
-    try {
-      const id = await adicionarExercicio(anatomia, exercicio, observacoes);
-      Alert.alert('Sucesso', `Exercício cadastrado com sucesso! ID: ${id}`);
-      setAnatomia('');
-      setExercicio('');
-      setObservacoes('');
-    } catch (error) {
-      Alert.alert('Erro', 'Erro ao cadastrar o exercício. Tente novamente.');
-    }
-  };
 
   const handleExercicioChange = (value: string) => {
-    setExercicio(value);
-    const exercicioSelecionado = exercicios.find((ex) => ex.Nome === value);
-    setObservacoes(exercicioSelecionado ? exercicioSelecionado.Observacoes : '');
+      setExercicio(value);
+      const exercicioSelecionado = exercicios.find((ex) => ex.Nome === value);
+  
+    if (exercicioSelecionado) {
+      setObservacoes(exercicioSelecionado.Observacoes);
+  
+      const exercicioId = exercicioSelecionado.id;
+  
+      if (!exerciciosSelecionados.includes(exercicioId)) {
+        setExerciciosSelecionados((prevSelecionados) => {
+          const novosSelecionados = [...prevSelecionados, exercicioId];
+          return novosSelecionados;
+        });
+      } else {
+        console.log("Exercício já selecionado:", exercicioId);
+      }
+    } else {
+      console.log("Exercício não encontrado.");
+    }
   };
+  
+  
+  
 
   const handleAdicionarRecomendacao = async () => {
-    const fisioterapeutaId = await getTherapistId();
-    if (fisioterapeutaId && exerciciosSelecionados.length > 0) {
+    if (exerciciosSelecionados.length > 0) {
+      console.log("aaaaaaa");
       const recomendacao = {
         id: Date.now(),
-        id_fisioterapeuta: fisioterapeutaId,
         id_paciente: null,  // Ainda não implementado
-        exercicios: exerciciosSelecionados.map((id) => ({
-          id,
-          nome: exercicios.find((ex) => ex.id === id)?.Nome || '',
-          observacoes: exercicios.find((ex) => ex.id === id)?.Observacoes || '',
-        })),
+        exercicios: exerciciosSelecionados.map((id) => {
+          const exercicio = exercicios.find((ex) => ex.id === id);
+          return {
+            id,
+            nome: exercicio ? exercicio.Nome : '',
+            observacoes: exercicio ? exercicio.Observacoes : '',
+          };
+        }),
       };
-
+  
       try {
         await adicionarRecomendacaoExercicio(recomendacao);
         Alert.alert('Sucesso', 'Recomendação de exercícios adicionada!');
@@ -91,6 +94,7 @@ export default function AdicionarExercicios() {
       Alert.alert('Erro', 'Selecione ao menos um exercício.');
     }
   };
+  
 
   return (
     <SafeAreaView style={styles.safeArea}>
