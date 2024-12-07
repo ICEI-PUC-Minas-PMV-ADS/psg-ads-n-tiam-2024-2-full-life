@@ -10,7 +10,6 @@ interface Exercicio {
 
 interface RecomendacaoExercicio {
   id: number;
-  id_fisioterapeuta: number;
   id_paciente: number | null;
   exercicios: { id: number; nome: string; observacoes: string }[];
 }
@@ -55,26 +54,26 @@ export async function adicionarExercicio(
 export async function listarExercicios(anatomia: string = ''): Promise<Exercicio[]> {
   try {
     let querySnapshot;
-if (anatomia) {
-  querySnapshot = await getDocs(exerciciosCollection);
-  querySnapshot = querySnapshot.docs.filter((doc) => doc.data().Anatomia === anatomia);
-} else {
-  querySnapshot = (await getDocs(exerciciosCollection)).docs;
-}
+    if (anatomia) {
+      querySnapshot = await getDocs(exerciciosCollection);
+      querySnapshot = querySnapshot.docs.filter((doc) => doc.data().Anatomia === anatomia);
+    } else {
+      querySnapshot = (await getDocs(exerciciosCollection)).docs;
+    }
 
-if (querySnapshot.length === 0) {
-  return [];
-}
+    if (querySnapshot.length === 0) {
+      return [];
+    }
 
-const exercicios: Exercicio[] = [];
-querySnapshot.forEach((doc) => {
-  const data = doc.data();
-  exercicios.push({
-    ...data,
-    id: parseInt(doc.id, 10),
-  });
-});
-
+    const exercicios: Exercicio[] = [];
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      exercicios.push({
+        ...data,
+        id: data.id,
+      });
+    });
+    console.log("Exercícios carregados:", exercicios);
     return exercicios;
   } catch (error) {
     console.error("Erro ao listar exercícios:", error);
@@ -99,10 +98,25 @@ export async function listarAnatomias(): Promise<string[]> {
   }
 }
 
-export async function adicionarRecomendacaoExercicio(recomendacao: RecomendacaoExercicio): Promise<void> {
+export async function adicionarRecomendacaoExercicio(recommendation: RecomendacaoExercicio): Promise<void> {
   try {
-    await addDoc(recomendacoesExerciciosCollection, recomendacao);
-    console.log("Recomendação de exercício adicionada com sucesso.", recomendacao);
+    const existingRecommendations = (await getDocs(recomendacoesExerciciosCollection)).docs.map(
+      doc => doc.data() as RecomendacaoExercicio
+    );
+
+    const lastId = existingRecommendations.reduce(
+      (maxId, currentRecommendation) => Math.max(maxId, currentRecommendation.id ?? 0),
+      0
+    );
+
+    const newId = lastId + 1;
+
+    const recommendationWithId = {
+      ...recommendation,
+      id: newId,
+    };
+
+    await addDoc(recomendacoesExerciciosCollection, recommendationWithId);
   } catch (error) {
     console.error("Erro ao adicionar recomendação de exercício:", error);
     throw error;
