@@ -2,8 +2,9 @@ import { getFirestore, doc, getDoc, collection, setDoc, query, orderBy, limit, g
 import { getAuth } from "firebase/auth";
 
 const db = getFirestore();
+const auth = getAuth();
 
-interface Paciente {
+export interface Pacientes {
   id: number;
   nome: string;
   data_nascimento: string;
@@ -14,8 +15,7 @@ interface Paciente {
   telefone: string;
 }
 
-export async function getLoggedInPatient(): Promise<Paciente | null> {
-  const auth = getAuth();
+export async function getLoggedInPatient(): Promise<Pacientes | null> {
   const user = auth.currentUser;
 
   if (!user) {
@@ -26,7 +26,7 @@ export async function getLoggedInPatient(): Promise<Paciente | null> {
   const patientSnapshot = await getDoc(patientRef);
 
   if (patientSnapshot.exists()) {
-    return patientSnapshot.data() as Paciente;
+    return patientSnapshot.data() as Pacientes;
   }
 
   return null;
@@ -79,7 +79,6 @@ export async function getNomePaciente(patientId: number): Promise<string | null>
 
 export async function getId(): Promise<number | null> {
   try {
-    const auth = getAuth();
     const usuarioAtual = auth.currentUser;
 
     if (!usuarioAtual) {
@@ -134,3 +133,33 @@ export async function getNextUserId(): Promise<number> {
     return 1; 
   }
 }
+
+export async function getEmail(): Promise<string | null> {
+  try{
+    const usuarioAtual = auth.currentUser;
+
+      if (!usuarioAtual) {
+        console.log('Nenhum usuário está logado.');
+        return null;
+      }
+
+      const emailUsuario = usuarioAtual.email;
+
+      return emailUsuario || null;
+
+  } catch (error) {
+    console.error('Erro ao buscar o email do paciente:', error);
+    return null;
+  }
+};
+
+export async function getPacientes(): Promise<Pacientes[]> {
+  try {
+    const pacientesSnapshot = await getDocs(collection(db, "Pacientes"));
+    const pacientes = pacientesSnapshot.docs.map((doc) => doc.data() as Pacientes);
+    return pacientes;
+  } catch (error) {
+    console.error("Erro ao buscar pacientes:", error);
+    return [];
+  }
+};

@@ -11,6 +11,8 @@ import HistoricoConsultas from "./src/pages/Historico_consultas";
 import ExerciciosPaciente from "./src/pages/Exercicios_paciente";
 import CadastroExercicios from "./src/pages/Cadastro_exercicios";
 import AdicionarTratamentos from "./src/pages/Adicionar_exercicios";
+import AnamnesePaciente from "./src/pages/AnamnesePaciente";
+import AnamneseFisioterapeuta from "./src/pages/AnamneseFisioterapeuta";
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +35,8 @@ export default function App() {
         <Stack.Screen name="ExerciciosPaciente" component={ExerciciosPaciente} />
         <Stack.Screen name="CadastroExercicios" component={CadastroExercicios} />
         <Stack.Screen name="AdicionarTratamentos" component={AdicionarTratamentos} />
+        <Stack.Screen name="AnamnesePaciente" component={AnamnesePaciente} />
+        <Stack.Screen name="AnamneseFisioterapeuta" component={AnamneseFisioterapeuta} />
       </Stack.Navigator>
     </NavigationContainer>
   );

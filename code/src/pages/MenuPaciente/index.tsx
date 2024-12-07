@@ -13,6 +13,7 @@ type RootStackParamList = {
     Agendamentos: undefined;
     AcompanharConsultas: undefined;
     HistoricoConsultas: undefined;
+    AnamnesePaciente: undefined;
 };
 
 type MenuPacienteNavigationProps = NativeStackNavigationProp<RootStackParamList, "MenuPaciente">;
@@ -29,7 +30,7 @@ export default function MenuPaciente() {
         { title: "Acompanhar Consultas", navigation: "AcompanharConsultas" },
         { title: "Histórico de Consultas", navigation: "HistoricoConsultas" },
         { title: "Exercícios Recomendados", navigation: "AdicionarTratamentos" },
-        { title: "Anamnese", navigation: "HistoricoConsultas" },
+        { title: "Anamnese", navigation: "AnamnesePaciente" },
     ];
 
     const filteredItems = items.filter(item =>

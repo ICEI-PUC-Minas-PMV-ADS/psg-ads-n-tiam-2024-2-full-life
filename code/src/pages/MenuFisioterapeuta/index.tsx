@@ -5,14 +5,16 @@ import { ButtonBlock } from '../../components/BotaoNavigation';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getNomePaciente } from '../../services/pacienteService';
+import { getNomeFisioterapeuta } from '../../services/fisioterapeutaService';
 import { getId } from '../../services/pacienteService';
+import { getTherapistId } from '../../services/fisioterapeutaService';
 
 type RootStackParamList = {
     MenuFisioterapeuta: undefined;
     Agendamentos: undefined;
     AcompanharConsultas: undefined;
     HistoricoConsultas: undefined;
+    AnamneseFisioterapeuta: undefined;
 };
 
 type MenuFisioterapeutaNavigationProps = NativeStackNavigationProp<RootStackParamList, "MenuFisioterapeuta">;
@@ -29,7 +31,7 @@ export default function MenuFisioterapeuta() {
         { title: "Acompanhar Consultas", navigation: "AcompanharConsultas" },
         { title: "Histórico de Consultas", navigation: "HistoricoConsultas" },
         { title: "Exercícios Recomendados", navigation: "AdicionarTratamentos" },
-        { title: "Anamnese", navigation: "HistoricoConsultas" },
+        { title: "Anamnese", navigation: "AnamneseFisioterapeuta" },
     ];
 
     const filteredItems = items.filter(item =>
@@ -39,10 +41,10 @@ export default function MenuFisioterapeuta() {
     useEffect(() => {
         const fetchUserId = async () => {
             try {
-                const idPaciente = await getId();
-                setUserId(idPaciente || 0);
+                const idFisioterapeuta = await getTherapistId();
+                setUserId(idFisioterapeuta || 0);           
             } catch (error) {
-                console.error("Erro ao buscar ID do paciente:", error);
+                console.error("Erro ao buscar ID do fisioterapeuta:", error);
                 setUserId(0);
             }
         };
@@ -54,11 +56,11 @@ export default function MenuFisioterapeuta() {
         const fetchUserName = async () => {
             if (userId) { 
                 try {
-                    const nomePaciente = await getNomePaciente(userId);
-                    setUserName(nomePaciente || 'Paciente');
+                    const nomeFisioterapeuta = await getNomeFisioterapeuta(userId);
+                    setUserName(nomeFisioterapeuta || 'Fisioterapeuta');
                 } catch (error) {
-                    console.error("Erro ao buscar nome do paciente:", error);
-                    setUserName('Paciente');
+                    console.error("Erro ao buscar nome do fisioterapeuta:", error);
+                    setUserName('Fisioterapeuta');
                 }
             }
         };
