@@ -106,13 +106,11 @@ export async function adicionarRecomendacaoExercicio(recommendation: Recomendaca
       data: doc.data() as RecomendacaoExercicio,
     }));
 
-    // Verificar se já existe recomendação para o paciente
     const recomendacaoExistente = recomendacoesExistentes.find(
       (rec) => rec.data.id_paciente === recommendation.id_paciente
     );
 
     if (recomendacaoExistente) {
-      // Atualizar o vetor de exercícios existente
       const exerciciosAtualizados = [
         ...recomendacaoExistente.data.exercicios,
         ...recommendation.exercicios.filter(
@@ -121,21 +119,18 @@ export async function adicionarRecomendacaoExercicio(recommendation: Recomendaca
         ),
       ];
 
-      // Criar referência ao documento existente
       const recomendacaoDocRef = doc(
         db,
         "RecomendacoesExercicios",
         recomendacaoExistente.id
       );
 
-      // Atualizar os exercícios no documento
       await updateDoc(recomendacaoDocRef, {
         exercicios: exerciciosAtualizados,
       });
 
       console.log("Recomendação atualizada com sucesso!");
     } else {
-      // Criar nova recomendação
       await addDoc(recomendacoesExerciciosCollection, recommendation);
       console.log("Nova recomendação adicionada com sucesso!");
     }
