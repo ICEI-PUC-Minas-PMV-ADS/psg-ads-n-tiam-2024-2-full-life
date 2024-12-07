@@ -41,7 +41,6 @@ export default function Agendamento() {
     const fetchId = async () => {
       try {
         const idPaciente = await getId();
-        console.log(idPaciente);
         if (idPaciente) {
           setId(idPaciente);
         }
