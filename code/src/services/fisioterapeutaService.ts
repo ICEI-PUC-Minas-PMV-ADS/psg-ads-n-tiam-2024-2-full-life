@@ -1,5 +1,5 @@
-import { getFirestore, collection, getDocs, doc, setDoc } from "firebase/firestore";
-
+import { getFirestore, collection, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 const db = getFirestore();
 
 interface Fisioterapeuta {
@@ -62,3 +62,52 @@ export async function saveFisioterapeuta(fisioterapeutaData: Fisioterapeuta) {
     throw error;
   }
 };
+
+
+export async function getLoggedInTherapist(): Promise<Fisioterapeuta | null> {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) {
+    return null;
+  }
+
+  const therapistRef = doc(db, "Fisioterapeutas", user.uid);
+  const therapistSnapshot = await getDoc(therapistRef);
+
+  if (therapistSnapshot.exists()) {
+    return therapistSnapshot.data() as Fisioterapeuta;
+  }
+
+  return null;
+}
+
+export async function getNomeFisioterapeuta(): Promise<string | null> {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  if (!user) return null;
+
+  const therapistRef = doc(db, "Fisioterapeutas", user.uid);
+  const therapistDoc = await getDoc(therapistRef);
+  if (!therapistDoc.exists()) return null;
+
+  const { nome } = therapistDoc.data();
+  return nome || null;
+}
+
+export async function getTherapistId(): Promise<number | null> {
+  const { currentUser } = getAuth();
+
+  if (!currentUser) {
+    return null;
+  }
+  const therapistRef = doc(db, 'Fisioterapeutas', currentUser.uid);
+
+  try {
+    const therapistDoc = await getDoc(therapistRef);
+    return therapistDoc.exists() ? therapistDoc.data()?.id || null : null;
+  } catch (error) {
+    console.error('Erro ao acessar o documento do fisioterapeuta:', error);
+    return null;
+  }
+}
