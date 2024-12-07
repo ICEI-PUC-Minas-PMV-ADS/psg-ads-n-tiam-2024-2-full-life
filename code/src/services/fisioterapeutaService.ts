@@ -101,3 +101,38 @@ export async function getNomeFisioterapeuta(therapistId: number): Promise<string
     return null;
   }
 }
+
+export async function getTherapistId(): Promise<number | null> {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+      console.log('Nenhum usuário está logado.');
+      return null;    
+    }
+
+    const email = user.email;
+
+    if (!email) {
+      console.log('Nenhum email encontrado.');
+      return null;
+    }
+
+    const querySnapshot = await getDocs(
+      query(collection(db, 'Fisioterapeutas'), where('email', '==', email), limit(1))
+    );
+
+    if (querySnapshot.empty) {
+      return null;
+    }
+
+    const therapistData = querySnapshot.docs[0].data();
+    const { id } = therapistData;
+
+    return id || null;
+  } catch (error) {
+    console.error('Erro ao buscar ID do fisioterapeuta:', error);
+    return null;
+  } 
+}

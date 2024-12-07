@@ -4,8 +4,8 @@ import { BarraSuperior } from '../../components/BarraSuperior';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 import { listarAnatomias, listarExercicios, adicionarExercicio, adicionarRecomendacaoExercicio } from '../../services/exerciciosService';
 import { useNavigation } from '@react-navigation/native';
-import { getTherapistId } from '../../services/fisioterapeutaService';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getTherapistId } from '../../services/fisioterapeutaService';
 
 export default function AdicionarExercicios() {
   const [anatomias, setAnatomias] = useState<string[]>([]);
