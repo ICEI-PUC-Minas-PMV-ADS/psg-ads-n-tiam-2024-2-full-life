@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { BarraSuperior } from '../../components/BarraSuperior';
-import ExerciciosService from '../../services/exerciciosService';
+import { listarAnatomias, adicionarExercicio } from '../../services/exerciciosService';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 
 export default function CadastroTratamento() {
   const [anatomia, setAnatomia] = useState('');
   const [nome, setNome] = useState('');
   const [observacoes, setObservacoes] = useState('');
-  const [anatomias, setAnatomias] = useState([]);
+  const [anatomias, setAnatomias] = useState<string[]>([]);
 
   useEffect(() => {
     const carregarAnatomias = async () => {
       try {
-        const listaAnatomias = await ExerciciosService.listarAnatomias();
+        const listaAnatomias = await listarAnatomias();
         setAnatomias(listaAnatomias);
       } catch (error) {
         console.log('Erro ao carregar anatomias. Tente novamente.');
@@ -25,7 +25,7 @@ export default function CadastroTratamento() {
 
   const handleCadastro = async () => {
     try {
-      const id = await ExerciciosService.adicionarExercicio(anatomia, nome, observacoes);
+      const id = await adicionarExercicio(anatomia, nome, observacoes);
       alert(`Exercício cadastrado com sucesso!`);
       setAnatomia('');
       setNome('');
