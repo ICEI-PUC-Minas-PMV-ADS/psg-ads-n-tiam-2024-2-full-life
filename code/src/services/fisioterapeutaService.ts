@@ -2,47 +2,63 @@ import { getFirestore, collection, getDocs, doc, setDoc } from "firebase/firesto
 
 const db = getFirestore();
 
-export async function fetchAgendamentos() {
-  const agendamentosMap: { [date: string]: string[] } = {};
+interface Fisioterapeuta {
+  id: number;
+  nome: string;
+  email: string;
+  telefone: string;
+  endereco: string;
+  especialidades: string[];
+  numero_crefito: string;
+  senha: string;
+  agenda: { [date: string]: string[] };
+}
+
+export async function fetchAgendamentos(): Promise<{ [date: string]: string[] }> {
+  const agendamentosByDate: { [date: string]: string[] } = {};
 
   try {
     const fisioterapeutasCollection = collection(db, "Fisioterapeutas");
     const snapshot = await getDocs(fisioterapeutasCollection);
 
     if (snapshot.empty) {
-      return agendamentosMap;
+      return agendamentosByDate;
     }
 
     snapshot.forEach((document) => {
-      const documentData = document.data();
-      const agendaData = documentData.agenda;
+      const { agenda } = document.data() as Fisioterapeuta;
 
-      if (!agendaData) {
+      if (!agenda) {
         return;
       }
 
-      Object.keys(agendaData).forEach((date) => {
-        if (!agendamentosMap[date]) {
-          agendamentosMap[date] = [];
+      Object.entries(agenda).forEach(([date, horarios]) => {
+        if (!Array.isArray(horarios)) {
+          console.warn(`Horários para a data ${date} não são um array:`, horarios);
+          return;
         }
-        agendamentosMap[date] = [...new Set([...agendamentosMap[date], ...agendaData[date]])];
+
+        if (!agendamentosByDate[date]) {
+          agendamentosByDate[date] = [];
+        }
+
+        agendamentosByDate[date] = [...new Set([...agendamentosByDate[date], ...horarios])];
       });
     });
 
-    return agendamentosMap;
+    return agendamentosByDate;
   } catch (error) {
-    console.error("Failed to fetch agendamentos: ", error);
-    return null;
-  }
-}
-
-export async function saveFisioterapeuta(data: any) {
-  try {
-    const fisioterapeutaRef = doc(collection(db, "Fisioterapeutas"), data.id);
-    await setDoc(fisioterapeutaRef, data);
-    console.log("Fisioterapeuta cadastrado com sucesso!");
-  } catch (error) {
-    console.error("Erro ao salvar fisioterapeuta:", error);
+    console.error("Erro ao buscar agendamentos:", error);
     throw error;
   }
-}
+};
+
+
+export async function saveFisioterapeuta(fisioterapeutaData: Fisioterapeuta) {
+  try {
+    const fisioterapeutaRef = doc(db, `Fisioterapeutas/${fisioterapeutaData.id}`);
+    await setDoc(fisioterapeutaRef, fisioterapeutaData);
+  } catch (error) {
+    throw error;
+  }
+};

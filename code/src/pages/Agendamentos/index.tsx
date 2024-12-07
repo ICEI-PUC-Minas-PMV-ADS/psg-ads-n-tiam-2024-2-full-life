@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import { BarraSuperior } from '../../components/BarraSuperior';
 import { Calendario } from '../../components/Calendario';
 import { Botao } from '../../components/Botao';
@@ -7,6 +7,7 @@ import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 import { getEspecialidades } from '../../services/especialidadeService';
 import { fetchAgendamentos } from '../../services/fisioterapeutaService';
 import { agendarHorario } from '../../services/agendamentoService';
+import { getPatientId } from '../../services/pacienteService';
 
 export default function Agendamento() {
   const [dataSelecionada, setDataSelecionada] = useState<Date | null>(null);
@@ -14,7 +15,7 @@ export default function Agendamento() {
   const [horario, setHorario] = useState<string>('');
   const [especialidades, setEspecialidades] = useState<string[]>([]);
   const [agendamentos, setAgendamentos] = useState<{ [key: string]: string[] }>({});
-
+  const [id, setId] = useState<Number>();
 
   useEffect(() => {
     const fetchEspecialidades = async () => {
@@ -26,7 +27,6 @@ export default function Agendamento() {
       }
     };
 
-    // Busca os agendamentos
     const fetchData = async () => {
       try {
         const agendamentosDoBanco = await fetchAgendamentos();
@@ -38,8 +38,20 @@ export default function Agendamento() {
       }
     };
 
+    const fetchId = async () => {
+      try {
+        const idPaciente = await getPatientId();
+        if (idPaciente) {
+          setId(idPaciente);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar agendamentos:", error);
+      }
+    };
+
     fetchEspecialidades();
     fetchData();
+    fetchId();
   }, []);
 
   const alterarDataHora = (data: Date, hora: string) => {
@@ -52,7 +64,7 @@ export default function Agendamento() {
   const confirmarAgendamento = async () => {
     if (dataSelecionada && horario && especialidade) {
       const agendamento = {
-        id_paciente: 1,
+        id_paciente: id as number,
         id_fisioterapeuta: 1,
         especialidade: especialidade,
         data_hora: dataSelecionada,
@@ -60,9 +72,30 @@ export default function Agendamento() {
       };
       try {
         const resultado = await agendarHorario(agendamento);
+        if (resultado.success) {
+          Alert.alert(
+            "Agendamento Confirmado",
+            "Seu agendamento foi realizado com sucesso!",
+            [{ text: "OK" }]
+          );
+          cancelarAgendamento();
+        } else {
+          throw new Error(resultado.error as string);
+        }
       } catch (error) {
+        Alert.alert(
+          "Erro",
+          "Não foi possível realizar o agendamento. Por favor, tente novamente.",
+          [{ text: "OK" }]
+        );
         console.error('Erro ao agendar horário:', error);
       }
+    } else {
+      Alert.alert(
+        "Campos Incompletos",
+        "Por favor, preencha todos os campos antes de confirmar o agendamento.",
+        [{ text: "OK" }]
+      );
     }
   };
 
@@ -74,12 +107,10 @@ export default function Agendamento() {
 
   function selecionarData(data: Date | null): string[] {
     if (!data) return [];
-
     const dia = String(data.getDate()).padStart(2, '0');
     const mes = String(data.getMonth() + 1).padStart(2, '0');
     const ano = data.getFullYear();
     const dataFormatada = `${dia}/${mes}/${ano}`;
-
     return agendamentos[dataFormatada] || [];
   }
 
@@ -95,7 +126,6 @@ export default function Agendamento() {
             dataSelecionada={dataSelecionada}
           />
         </View>
-
         <Text style={styles.textoCabecalho}>Selecionar Hora:</Text>
         <CampoDeEntrada
           placeholder="Horários"
@@ -115,7 +145,6 @@ export default function Agendamento() {
           onChangeText={setEspecialidade}
           options={especialidades}
         />
-
         <View style={styles.containerBotoes}>
           <Botao
             style={styles.botaoCancelar}
@@ -166,7 +195,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 5,
-    height: 70
+    height: 70,
   },
   botaoConfirmar: {
     flex: 1,
@@ -175,7 +204,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 5,
-    height: 70
+    height: 70,
   },
   textoBotaoCancelar: {
     color: '#000000',

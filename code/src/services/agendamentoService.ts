@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, addDoc, orderBy, limit } from "firebase/firestore";
 import { db } from "./firebaseConnection";
 
 type Agendamento = {
@@ -61,3 +61,33 @@ export const agendarHorario = async (agendamento: Agendamento) => {
     return { success: false, error: error };
   }
 };
+
+export async function getProximoAgendamento(patientId: number): Promise<any | null> {
+  try {
+    const appointmentsRef = collection(db, "Agendamentos");
+    const appointmentQuery = query(
+      appointmentsRef,
+      where("id_paciente", "==", patientId),
+      where("data_hora", ">=", new Date()), 
+      orderBy("data_hora", "asc"),
+      limit(1)
+    );
+
+    const querySnapshot = await getDocs(appointmentQuery);
+
+    if (!querySnapshot.empty) {
+      const appointmentData = querySnapshot.docs[0].data();
+      // Converte 'data_hora' para objeto Date caso seja um Timestamp
+      if (appointmentData.data_hora && appointmentData.data_hora.toDate) {
+        appointmentData.data_hora = appointmentData.data_hora.toDate();
+      }
+      return appointmentData;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Erro ao buscar próximo agendamento:", error);
+    throw error;
+  }
+}
+

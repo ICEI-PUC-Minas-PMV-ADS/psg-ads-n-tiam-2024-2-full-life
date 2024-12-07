@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { savePaciente } from "../../services/pacienteService";
 import { saveFisioterapeuta } from "../../services/fisioterapeutaService";
+import { getNextUserId } from "../../services/pacienteService";
 
 export default function CadastroScreen() {
   const [tipoCadastro, setTipoCadastro] = useState<"Paciente" | "Fisioterapeuta">("Paciente");
@@ -32,11 +33,10 @@ export default function CadastroScreen() {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
-      const userId = userCredential.user.uid;
 
       if (tipoCadastro === "Paciente") {
         await savePaciente({
-          id: userId,
+          id: 0, 
           nome,
           email,
           senha,
@@ -47,7 +47,7 @@ export default function CadastroScreen() {
         });
       } else {
         await saveFisioterapeuta({
-          id: userId,
+          id: 0,
           nome,
           email,
           senha,
@@ -55,7 +55,7 @@ export default function CadastroScreen() {
           especialidades: [],
           telefone: "",
           endereco: "",
-          agenda: {},
+          agenda: {}
         });
       }
 
