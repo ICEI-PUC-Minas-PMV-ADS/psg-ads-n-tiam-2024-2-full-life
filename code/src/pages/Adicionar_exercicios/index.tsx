@@ -1,20 +1,94 @@
-import React, { useState } from 'react';
-import {
-  View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { BarraSuperior } from '../../components/BarraSuperior';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
+import { listarAnatomias, listarExercicios, adicionarExercicio, adicionarRecomendacaoExercicio } from '../../services/exerciciosService';
+import { useNavigation } from '@react-navigation/native';
+import { getTherapistId } from '../../services/fisioterapeutaService';
 
 export default function AdicionarExercicios() {
+  const [anatomias, setAnatomias] = useState<string[]>([]);
+  const [exercicios, setExercicios] = useState<{ id: number; Nome: string; Anatomia: string; Observacoes: string }[]>([]);
   const [anatomia, setAnatomia] = useState('');
   const [exercicio, setExercicio] = useState('');
   const [observacoes, setObservacoes] = useState('');
+  const [exerciciosSelecionados, setExerciciosSelecionados] = useState<number[]>([]);
 
-  const anatomias = ['Cabeça', 'Braço', 'Perna']; 
-  const exercicios = ['Flexão', 'Agachamento', 'Abdominal'];
+  const navigation = useNavigation();
 
-  const handleCadastrarExercicio = () => {
-    console.log('Exercício cadastrado:', anatomia, exercicio, observacoes);
+  useEffect(() => {
+    const carregarAnatomias = async () => {
+      try {
+        const listaAnatomias = await listarAnatomias();
+        setAnatomias(listaAnatomias);
+      } catch (error) {
+        Alert.alert('Erro', 'Erro ao carregar anatomias. Tente novamente.');
+      }
+    };
+
+    const carregarExercicios = async () => {
+      try {
+        const listaExercicios = await listarExercicios(anatomia);
+        if (listaExercicios.length === 0) {
+          Alert.alert('Atenção', 'Não há exercícios cadastrados para esta anatomia.');
+        }
+        setExercicios(listaExercicios);
+      } catch (error) {
+        Alert.alert('Erro', 'Erro ao carregar exercícios. Tente novamente.');
+      }
+    };
+
+    carregarAnatomias();
+    carregarExercicios();
+  }, [anatomia]);
+
+  const handleCadastrarExercicio = async () => {
+    if (!anatomia || !exercicio) {
+      Alert.alert('Atenção', 'Preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    try {
+      const id = await adicionarExercicio(anatomia, exercicio, observacoes);
+      Alert.alert('Sucesso', `Exercício cadastrado com sucesso! ID: ${id}`);
+      setAnatomia('');
+      setExercicio('');
+      setObservacoes('');
+    } catch (error) {
+      Alert.alert('Erro', 'Erro ao cadastrar o exercício. Tente novamente.');
+    }
+  };
+
+  const handleExercicioChange = (value: string) => {
+    setExercicio(value);
+    const exercicioSelecionado = exercicios.find((ex) => ex.Nome === value);
+    setObservacoes(exercicioSelecionado ? exercicioSelecionado.Observacoes : '');
+  };
+
+  const handleAdicionarRecomendacao = async () => {
+    const fisioterapeutaId = await getTherapistId();
+    if (fisioterapeutaId && exerciciosSelecionados.length > 0) {
+      const recomendacao = {
+        id: Date.now(),
+        id_fisioterapeuta: fisioterapeutaId,
+        id_paciente: null,  // Ainda não implementado
+        exercicios: exerciciosSelecionados.map((id) => ({
+          id,
+          nome: exercicios.find((ex) => ex.id === id)?.Nome || '',
+          observacoes: exercicios.find((ex) => ex.id === id)?.Observacoes || '',
+        })),
+      };
+
+      try {
+        await adicionarRecomendacaoExercicio(recomendacao);
+        Alert.alert('Sucesso', 'Recomendação de exercícios adicionada!');
+        setExerciciosSelecionados([]);
+      } catch (error) {
+        Alert.alert('Erro', 'Erro ao adicionar recomendação. Tente novamente.');
+      }
+    } else {
+      Alert.alert('Erro', 'Selecione ao menos um exercício.');
+    }
   };
 
   return (
@@ -36,27 +110,23 @@ export default function AdicionarExercicios() {
         <CampoDeEntrada
           placeholder="Selecione o exercício"
           value={exercicio}
-          onChangeText={setExercicio}
-          options={exercicios}
+          onChangeText={handleExercicioChange}
+          options={exercicios.map((ex) => ex.Nome)}
         />
-
-        <TouchableOpacity style={styles.buttonAdicionar} onPress={handleCadastrarExercicio}>
-          <Text style={styles.buttonText}>Adicionar</Text>
-        </TouchableOpacity>
 
         <Text style={styles.label}>Observações</Text>
         <View style={styles.observacoesBox}>
-          <TextInput
-            style={styles.observacoesText}
-            placeholder="Observações serão exibidas aqui"
-            value={observacoes}
-            editable={false}
-            multiline
-          />
+          <Text style={styles.observacoesText}>
+            {observacoes || 'Nenhuma observação disponível.'}
+          </Text>
         </View>
 
-        <TouchableOpacity style={styles.buttonCadastrar} onPress={handleCadastrarExercicio}>
-          <Text style={styles.buttonText}>Cadastrar exercício</Text>
+        <TouchableOpacity style={styles.buttonCadastrar} onPress={handleAdicionarRecomendacao}>
+          <Text style={styles.buttonText}>Adicionar exercício</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.buttonRegistrarNovo} onPress={() => navigation.navigate('CadastroExercicios' as never)}>
+          <Text style={styles.buttonText}>Registrar novo exercício</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -85,21 +155,21 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
-  input: {
-    height: 40,
+  observacoesBox: {
+    height: 100,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 4,
-    marginBottom: 16,
     paddingHorizontal: 8,
-    backgroundColor: '#fff',
-  },
-  buttonAdicionar: {
-    backgroundColor: '#4CAF50',
-    borderRadius: 4,
-    padding: 12,
-    alignItems: 'center',
+    paddingVertical: 8,
     marginBottom: 16,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+  },
+  observacoesText: {
+    fontSize: 14,
+    color: '#333',
+    textAlignVertical: 'center',
   },
   buttonCadastrar: {
     backgroundColor: '#4CAF50',
@@ -108,23 +178,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 16,
   },
+  buttonRegistrarNovo: {
+    backgroundColor: '#2196F3',
+    borderRadius: 4,
+    padding: 8,
+    alignItems: 'center',
+    marginTop: 16,
+  },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 16,
-  },
-  observacoesBox: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    padding: 8,
-    backgroundColor: '#fff',
-    height: 120,
-    marginBottom: 16,
-  },
-  observacoesText: {
-    fontSize: 14,
-    color: '#333',
-    textAlignVertical: 'top',
   },
 });
