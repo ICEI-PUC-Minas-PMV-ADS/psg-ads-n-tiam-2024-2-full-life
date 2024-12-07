@@ -17,6 +17,17 @@ export default function Agendamento() {
   const [agendamentos, setAgendamentos] = useState<{ [key: string]: string[] }>({});
   const [id, setId] = useState<Number>();
 
+  const fetchData = async () => {
+    try {
+      const agendamentosDoBanco = await fetchAgendamentos();
+      if (agendamentosDoBanco) {
+        setAgendamentos(agendamentosDoBanco);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar agendamentos:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchEspecialidades = async () => {
       try {
@@ -27,20 +38,10 @@ export default function Agendamento() {
       }
     };
 
-    const fetchData = async () => {
-      try {
-        const agendamentosDoBanco = await fetchAgendamentos();
-        if (agendamentosDoBanco) {
-          setAgendamentos(agendamentosDoBanco);
-        }
-      } catch (error) {
-        console.error("Erro ao buscar agendamentos:", error);
-      }
-    };
-
     const fetchId = async () => {
       try {
         const idPaciente = await getId();
+        console.log(idPaciente);
         if (idPaciente) {
           setId(idPaciente);
         }
@@ -78,6 +79,8 @@ export default function Agendamento() {
             "Seu agendamento foi realizado com sucesso!",
             [{ text: "OK" }]
           );
+
+          await fetchData();
           cancelarAgendamento();
         } else {
           throw new Error(resultado.error as string);
