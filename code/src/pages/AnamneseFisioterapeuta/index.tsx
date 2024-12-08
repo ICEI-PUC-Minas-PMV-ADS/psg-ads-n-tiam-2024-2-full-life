@@ -4,8 +4,11 @@ import { AnamneseFormFisioterapeuta } from '../../components/AnamneseFormFisiote
 import { BarraSuperior } from '../../components/BarraSuperior';
 import { CampoDeEntrada } from '../../components/CampoDeEntrada';
 import { getPacientes, Pacientes } from '../../services/pacienteService';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function AnamneseFisioterapeuta() {
+    const navigation = useNavigation();
     const [exames, setExames] = useState<string[]>([]);
     const [laudos, setLaudos] = useState<string[]>([]);
     const [pacientes, setPacientes] = useState<string[]>([]);
@@ -83,7 +86,7 @@ export default function AnamneseFisioterapeuta() {
                     <Text style={styles.buttonTextInput}>Adicionar Laudo</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AdicionarTratamentos' as never)}>
                     <Text style={styles.buttonText}>Exercícios</Text>
                 </TouchableOpacity>
             </ScrollView>

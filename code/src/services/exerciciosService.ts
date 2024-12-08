@@ -1,5 +1,5 @@
 import { db } from "./firebaseConnection";
-import { collection, addDoc, getDocs, CollectionReference, doc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, CollectionReference, doc, updateDoc, query, where } from "firebase/firestore";
 
 interface Exercicio {
   id: number;
@@ -140,3 +140,30 @@ export async function adicionarRecomendacaoExercicio(recommendation: Recomendaca
   }
 }
 
+export async function getRecomendacoesPorPaciente(idPaciente: number): Promise<RecomendacaoExercicio | null> {
+  try {
+    const recomendacoesQuery = query(
+      recomendacoesExerciciosCollection,
+      where("id_paciente", "==", idPaciente)
+    );
+
+    const querySnapshot = await getDocs(recomendacoesQuery);
+
+    if (querySnapshot.empty) {
+      console.log("Nenhuma recomendação encontrada para o paciente.");
+      return null;
+    }
+
+    const recomendacaoDoc = querySnapshot.docs[0];
+    const recomendacao = {
+      id: recomendacaoDoc.id as unknown as number,
+      ...recomendacaoDoc.data(),
+    } as RecomendacaoExercicio;
+
+    console.log("Recomendações carregadas:", recomendacao);
+    return recomendacao;
+  } catch (error) {
+    console.error("Erro ao buscar recomendações para o paciente:", error);
+    throw error;
+  }
+}

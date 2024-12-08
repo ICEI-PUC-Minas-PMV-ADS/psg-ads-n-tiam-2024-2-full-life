@@ -29,7 +29,7 @@ export default function MenuPaciente() {
         { title: "Realizar Agendamento", navigation: "Agendamentos" },
         { title: "Acompanhar Consultas", navigation: "AcompanharConsultas" },
         { title: "Histórico de Consultas", navigation: "HistoricoConsultas" },
-        { title: "Exercícios Recomendados", navigation: "AdicionarTratamentos" },
+        { title: "Exercícios Recomendados", navigation: "ExerciciosPaciente" },
         { title: "Anamnese", navigation: "AnamnesePaciente" },
     ];
 
