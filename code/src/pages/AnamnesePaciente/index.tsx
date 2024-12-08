@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
 import { AnamneseFormPaciente } from '../../components/AnamneseFormPaciente';
 import { BarraSuperior } from '../../components/BarraSuperior';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function AnamnesePaciente() {
+    const navigation = useNavigation();
     const [exames, setExames] = useState<string[]>([]);
     const [laudos, setLaudos] = useState<string[]>([]);
 
@@ -52,7 +55,7 @@ export default function AnamnesePaciente() {
                     </Text>
                 ))} */}
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ExerciciosPaciente' as never)}>
                     <Text style={styles.buttonText}>Exercícios</Text>
                 </TouchableOpacity>
             </ScrollView>
