@@ -1,30 +1,36 @@
 import { db } from "./firebaseConnection";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, where, query, Timestamp, doc, getDoc, updateDoc } from "firebase/firestore";
 
 interface Consulta {
   data_hora: string;
-  id_fisioterapeuta: string;
-  id_paciente: string;
+  id_fisioterapeuta: number;
+  id_paciente: number;
   observacoes: string;
+  id: number; 
 }
 
 export async function getConsultas(): Promise<Consulta[]> {
   try {
     const agendamentosRef = collection(db, "Agendamentos");
-
     const consultasData: Consulta[] = [];
     const agendamentosSnapshot = await getDocs(agendamentosRef);
 
     agendamentosSnapshot.forEach((doc) => {
       const data = doc.data();
+      const dataHora = data.data_hora;
+
+      let data_hora_formatada = "";
+      if (dataHora instanceof Timestamp) {
+        data_hora_formatada = dataHora.toDate().toISOString();
+      } else if (typeof dataHora === "string") {
+        data_hora_formatada = new Date(dataHora).toISOString();
+      }
+
       consultasData.push({
-        data_hora: data.data_hora
-          ? typeof data.data_hora.toDate === "function"
-            ? data.data_hora.toDate().toISOString() 
-            : new Date(data.data_hora).toISOString() 
-          : "",
-        id_fisioterapeuta: data.id_fisioterapeuta || "",
-        id_paciente: data.id_paciente || "",
+        id: parseInt(doc.id, 10), // Conversão do id para número
+        data_hora: data_hora_formatada,
+        id_fisioterapeuta: data.id_fisioterapeuta || 0,
+        id_paciente: data.id_paciente || 0,
         observacoes: data.observacoes || "",
       });
     });
@@ -35,3 +41,86 @@ export async function getConsultas(): Promise<Consulta[]> {
     return [];
   }
 }
+
+export async function getConsultasFromConsultasCollection(): Promise<Consulta[]> {
+  try {
+    const consultasRef = collection(db, "Consultas");
+    const consultasData: Consulta[] = [];
+    const consultasSnapshot = await getDocs(consultasRef);
+
+    consultasSnapshot.forEach((doc) => {
+      const data = doc.data();
+      const dataHora = data.data_hora;
+
+      let data_hora_formatada = "";
+      if (dataHora instanceof Timestamp) {
+        data_hora_formatada = dataHora.toDate().toISOString();
+      } else if (typeof dataHora === "string") {
+        data_hora_formatada = new Date(dataHora).toISOString();
+      }
+
+      consultasData.push({
+        id: parseInt(doc.id, 10),
+        data_hora: data_hora_formatada,
+        id_fisioterapeuta: data.id_fisioterapeuta || 0,
+        id_paciente: data.id_paciente || 0,
+        observacoes: data.observacoes || "",
+      });
+    });
+
+    return consultasData;
+  } catch (error) {
+    console.error("Erro ao buscar consultas da coleção Consultas: ", error);
+    return [];
+  }
+}
+
+export async function getConsultasByPatientId(patientId: number): Promise<Consulta[]> {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+
+    const snapshot = await getDocs(
+      query(
+        collection(db, 'Consultas'),
+        where('id_paciente', '==', patientId),
+        where('data_hora', '<', `${today}T23:59:59`)
+      )
+    );
+
+    if (snapshot.empty) {
+      return [];
+    }
+
+    const consultas: Consulta[] = snapshot.docs.map((doc) => {
+      const data = doc.data();
+
+      return {
+        id: parseInt(doc.id, 10) || 0, 
+        data_hora: data.data_hora || '',
+        id_fisioterapeuta: Number(data.id_fisioterapeuta) || 0, 
+        id_paciente: Number(data.id_paciente) || 0, 
+        observacoes: data.observacoes || '', 
+      };
+    });
+
+    return consultas;
+  } catch (error) {
+    console.error('Erro ao buscar consultas:', error);
+    throw new Error('Não foi possível buscar as consultas.');
+  }
+}
+
+
+export const fetchFisioterapeutaAgenda = async (idFisioterapeuta: number) => {
+  const docRef = doc(db, 'Fisioterapeutas', String(idFisioterapeuta));
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data().agenda || {};
+  }
+  throw new Error('Fisioterapeuta não encontrado');
+};
+
+export const updateFisioterapeutaAgenda = async (idFisioterapeuta: number, novaAgenda: any) => {
+  const docRef = doc(db, 'Fisioterapeutas', String(idFisioterapeuta));
+  await updateDoc(docRef, { agenda: novaAgenda });
+};
