@@ -10,6 +10,33 @@ type Agendamento = {
   status: string;
 };
 
+export async function getProximoAgendamentoFisioterapeuta(): Promise<any | null> {
+  try {
+    const fisioterapeutaId = 2; 
+    const appointmentsRef = collection(db, "Agendamentos");
+    const appointmentQuery = query(
+      appointmentsRef,
+      where("id_fisioterapeuta", "==", fisioterapeutaId),
+      where("data_hora", ">=", new Date()), 
+      orderBy("data_hora", "asc"),
+      limit(1)
+    );
+
+    const querySnapshot = await getDocs(appointmentQuery);
+
+    if (!querySnapshot.empty) {
+      const appointmentData = querySnapshot.docs[0].data();
+      appointmentData.data_hora = appointmentData.data_hora.toDate();
+      return appointmentData;
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Erro ao buscar próximo agendamento:", error);
+    throw error;
+  }
+};
+
 export const agendarHorario = async (agendamento: Agendamento) => {
   try {
     const agendamentosRef = collection(db, "Agendamentos");
@@ -35,6 +62,7 @@ export const agendarHorario = async (agendamento: Agendamento) => {
     }
 
     const fisioterapeutasRef = collection(db, "Fisioterapeutas");
+    console.log(agendamento.id_fisioterapeuta)
     const fisioterapeutaQuery = query(fisioterapeutasRef, where("id", "==", Number(agendamento.id_fisioterapeuta)));
     const fisioterapeutaSnapshot = await getDocs(fisioterapeutaQuery);
 

@@ -1,6 +1,5 @@
 import { db } from "./firebaseConnection";
-import { collection, getDocs, where, query } from "firebase/firestore";
-import { Timestamp } from "firebase/firestore";
+import { collection, getDocs, where, query, Timestamp, doc, getDoc, updateDoc } from "firebase/firestore";
 
 interface Consulta {
   data_hora: string;
@@ -42,6 +41,40 @@ export async function getConsultas(): Promise<Consulta[]> {
     return [];
   }
 }
+
+export async function getConsultasFromConsultasCollection(): Promise<Consulta[]> {
+  try {
+    const consultasRef = collection(db, "Consultas");
+    const consultasData: Consulta[] = [];
+    const consultasSnapshot = await getDocs(consultasRef);
+
+    consultasSnapshot.forEach((doc) => {
+      const data = doc.data();
+      const dataHora = data.data_hora;
+
+      let data_hora_formatada = "";
+      if (dataHora instanceof Timestamp) {
+        data_hora_formatada = dataHora.toDate().toISOString();
+      } else if (typeof dataHora === "string") {
+        data_hora_formatada = new Date(dataHora).toISOString();
+      }
+
+      consultasData.push({
+        id: parseInt(doc.id, 10),
+        data_hora: data_hora_formatada,
+        id_fisioterapeuta: data.id_fisioterapeuta || 0,
+        id_paciente: data.id_paciente || 0,
+        observacoes: data.observacoes || "",
+      });
+    });
+
+    return consultasData;
+  } catch (error) {
+    console.error("Erro ao buscar consultas da coleção Consultas: ", error);
+    return [];
+  }
+}
+
 export async function getConsultasByPatientId(patientId: number): Promise<Consulta[]> {
   try {
     const today = new Date().toISOString().split('T')[0];
@@ -77,3 +110,17 @@ export async function getConsultasByPatientId(patientId: number): Promise<Consul
   }
 }
 
+
+export const fetchFisioterapeutaAgenda = async (idFisioterapeuta: number) => {
+  const docRef = doc(db, 'Fisioterapeutas', String(idFisioterapeuta));
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data().agenda || {};
+  }
+  throw new Error('Fisioterapeuta não encontrado');
+};
+
+export const updateFisioterapeutaAgenda = async (idFisioterapeuta: number, novaAgenda: any) => {
+  const docRef = doc(db, 'Fisioterapeutas', String(idFisioterapeuta));
+  await updateDoc(docRef, { agenda: novaAgenda });
+};

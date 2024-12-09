@@ -163,3 +163,17 @@ export async function getPacientes(): Promise<Pacientes[]> {
     return [];
   }
 };
+
+export async function getAllPacientes(): Promise<Pacientes[]> {
+  try {
+    const pacientesSnapshot = await getDocs(collection(db, "Pacientes"));
+    const pacientes = pacientesSnapshot.docs.map((doc) => ({
+      id: doc.data().id,
+      nome: doc.data().nome,
+    }));
+    return pacientes;
+  } catch (error) {
+    console.error("Erro ao buscar todos os pacientes:", error);
+    return [];
+  }
+}

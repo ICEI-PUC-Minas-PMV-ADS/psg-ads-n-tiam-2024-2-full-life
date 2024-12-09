@@ -65,7 +65,7 @@ export default function Agendamento() {
     if (dataSelecionada && horario && especialidade) {
       const agendamento = {
         id_paciente: id as number,
-        id_fisioterapeuta: 1,
+        id_fisioterapeuta: 2,
         especialidade: especialidade,
         data_hora: dataSelecionada,
         status: 'agendado'

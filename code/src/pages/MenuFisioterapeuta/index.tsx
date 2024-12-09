@@ -27,9 +27,10 @@ export default function MenuFisioterapeuta() {
     const [userId , setUserId] = useState<number | null>(null);
 
     const items = [
-        { title: "Realizar Agendamento", navigation: "Agendamentos" },
-        { title: "Acompanhar Consultas", navigation: "AcompanharConsultas" },
-        { title: "Histórico de Consultas", navigation: "HistoricoConsultas" },
+        { title: "Gerenciar Agenda", navigation: "GerenciarAgendaFisio" },
+        { title: "Acompanhar Consultas", navigation: "AcompanharConsultasFisio" },
+        { title: "Histórico de Consultas", navigation: "AgendamentosFisioterapeuta" },
+        { title: "Listar Pacientes", navigation: "ListarPacientes" },
         { title: "Exercícios Recomendados", navigation: "AdicionarTratamentos" },
         { title: "Anamnese", navigation: "AnamneseFisioterapeuta" },
     ];
