@@ -1,5 +1,5 @@
 import { db } from "./firebaseConnection";
-import { collection, getDocs, where, query, Timestamp, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, getDocs, where, query, Timestamp, doc, getDoc, updateDoc, addDoc } from "firebase/firestore";
 
 interface Consulta {
   data_hora: string;
@@ -27,7 +27,7 @@ export async function getConsultas(): Promise<Consulta[]> {
       }
 
       consultasData.push({
-        id: parseInt(doc.id, 10), // Conversão do id para número
+        id: parseInt(doc.id, 10), 
         data_hora: data_hora_formatada,
         id_fisioterapeuta: data.id_fisioterapeuta || 0,
         id_paciente: data.id_paciente || 0,
@@ -112,15 +112,37 @@ export async function getConsultasByPatientId(patientId: number): Promise<Consul
 
 
 export const fetchFisioterapeutaAgenda = async (idFisioterapeuta: number) => {
-  const docRef = doc(db, 'Fisioterapeutas', String(idFisioterapeuta));
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data().agenda || {};
+  try {
+    const fisioterapeutasRef = collection(db, 'Fisioterapeutas');
+    
+    const q = query(fisioterapeutasRef, where("id", "==", idFisioterapeuta));
+    
+    const querySnapshot = await getDocs(q);
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0]; 
+      return doc.data().agenda || {};
+    }
+    throw new Error(`Fisioterapeuta com ID ${idFisioterapeuta} não encontrado`);
+  } catch (error) {
+    console.error('Erro ao buscar a agenda:', error);
+    throw error;
   }
-  throw new Error('Fisioterapeuta não encontrado');
 };
 
 export const updateFisioterapeutaAgenda = async (idFisioterapeuta: number, novaAgenda: any) => {
   const docRef = doc(db, 'Fisioterapeutas', String(idFisioterapeuta));
   await updateDoc(docRef, { agenda: novaAgenda });
 };
+
+export async function addConsulta(consulta: Consulta) {
+  try {
+    const consultasRef = collection(db, "Consultas");
+    await addDoc(consultasRef, {
+      ...consulta,
+      data_hora: consulta.data_hora instanceof Date ? consulta.data_hora.toISOString() : consulta.data_hora,
+    });
+  } catch (error) {
+    console.error("Erro ao adicionar consulta:", error);
+    throw error;
+  }
+}

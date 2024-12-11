@@ -6,7 +6,7 @@ interface CampoDeEntradaProps {
   placeholder: string;
   value: string;
   onChangeText: (text: string) => void;
-  options: string[];
+  options?: string[];
 }
 
 export function CampoDeEntrada({ placeholder, value, onChangeText, options }: CampoDeEntradaProps) {

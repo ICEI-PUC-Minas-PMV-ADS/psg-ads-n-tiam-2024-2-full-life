@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 interface CalendarioProps {
-  agendamentos: { [data: string]: string[] };
+  agendamentos?: { [data: string]: string[] };
   aoAlterarDataHora: (data: Date, hora: string) => void;
   dataSelecionada: Date | null;
 }

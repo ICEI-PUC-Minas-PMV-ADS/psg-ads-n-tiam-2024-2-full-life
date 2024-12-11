@@ -10,32 +10,24 @@ type Agendamento = {
   status: string;
 };
 
-export async function getProximoAgendamentoFisioterapeuta(): Promise<any | null> {
+export async function getProximoAgendamentoFisioterapeuta() {
   try {
-    const fisioterapeutaId = 2; 
-    const appointmentsRef = collection(db, "Agendamentos");
+    const fisioterapeutaId = 2;
+    const appointmentsRef = collection(db, 'Agendamentos');
     const appointmentQuery = query(
       appointmentsRef,
-      where("id_fisioterapeuta", "==", fisioterapeutaId),
-      where("data_hora", ">=", new Date()), 
-      orderBy("data_hora", "asc"),
+      orderBy('data_hora', 'asc'),
+      where('id_fisioterapeuta', '==', fisioterapeutaId),
+      where('data_hora', '>=', new Date()),
       limit(1)
     );
-
     const querySnapshot = await getDocs(appointmentQuery);
-
-    if (!querySnapshot.empty) {
-      const appointmentData = querySnapshot.docs[0].data();
-      appointmentData.data_hora = appointmentData.data_hora.toDate();
-      return appointmentData;
-    }
-
-    return null;
+    return querySnapshot.empty ? null : querySnapshot.docs[0].data();
   } catch (error) {
-    console.error("Erro ao buscar próximo agendamento:", error);
+    console.error('Erro ao buscar próximo agendamento:', error);
     throw error;
   }
-};
+}
 
 export const agendarHorario = async (agendamento: Agendamento) => {
   try {
@@ -133,19 +125,17 @@ export async function getProximoAgendamento(patientId: number): Promise<any | nu
   }
 };
 
-export async function deleteAgendamento(agendamentoId: number): Promise<void> {
+
+export async function deleteAgendamento(agendamentoId: number) {
   try {
-    const appointmentsRef = collection(db, "Agendamentos");
-    const appointmentQuery = query(appointmentsRef, where("id", "==", agendamentoId));
+    const appointmentsRef = collection(db, 'Agendamentos');
+    const appointmentQuery = query(appointmentsRef, where('id', '==', agendamentoId));
     const querySnapshot = await getDocs(appointmentQuery);
     if (!querySnapshot.empty) {
-      const appointmentDoc = querySnapshot.docs[0];
-      await deleteDoc(appointmentDoc.ref);
+      await deleteDoc(querySnapshot.docs[0].ref);
     }
-  }
-  catch (error) {
-    console.error("Erro ao excluir agendamento:", error);
+  } catch (error) {
+    console.error('Erro ao excluir agendamento:', error);
     throw error;
   }
 }
-
