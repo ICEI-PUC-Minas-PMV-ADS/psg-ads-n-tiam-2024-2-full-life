@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-interface CalendarioProps {
-  agendamentos?: { [data: string]: string[] };
-  aoAlterarDataHora: (data: Date, hora: string) => void;
+interface CalendarioGerenciarProps {
   dataSelecionada: Date | null;
+  aoSelecionarData: (data: Date) => void;
 }
 
-export function Calendario({ agendamentos, aoAlterarDataHora, dataSelecionada }: CalendarioProps) {
-  const [dataInternaSelecionada, setDataInternaSelecionada] = useState<Date | null>(dataSelecionada);
+export function CalendarioGerenciar({ dataSelecionada, aoSelecionarData }: CalendarioGerenciarProps) {
   const [mesAtual, setMesAtual] = useState(new Date());
-
-  useEffect(() => {
-    setDataInternaSelecionada(dataSelecionada);
-  }, [dataSelecionada]);
 
   const obterDiasDoMes = (data: Date) => {
     const ano = data.getFullYear();
@@ -80,37 +74,24 @@ export function Calendario({ agendamentos, aoAlterarDataHora, dataSelecionada }:
 
     for (let i = 1; i <= diasDoMes; i++) {
       const data = new Date(mesAtual.getFullYear(), mesAtual.getMonth(), i);
-      const dataFormatada = data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-      const temAgendamentos = agendamentos[dataFormatada]?.length > 0;
-
       dias.push(
         <TouchableOpacity
           key={i}
           style={[
             styles.celulaDia,
-            temAgendamentos && styles.diaDisponivel,
-            dataInternaSelecionada?.getDate() === i &&
-              dataInternaSelecionada?.getMonth() === mesAtual.getMonth() &&
-              dataInternaSelecionada?.getFullYear() === mesAtual.getFullYear() &&
+            dataSelecionada?.getDate() === i &&
+              dataSelecionada?.getMonth() === mesAtual.getMonth() &&
+              dataSelecionada?.getFullYear() === mesAtual.getFullYear() &&
               styles.diaSelecionado,
           ]}
-          onPress={() => {
-            if (temAgendamentos) {
-              setDataInternaSelecionada(data);
-              const horariosDisponiveis = agendamentos[dataFormatada];
-              if (horariosDisponiveis && horariosDisponiveis.length > 0) {
-                aoAlterarDataHora(data, horariosDisponiveis[0]);
-              }
-            }
-          }}
+          onPress={() => aoSelecionarData(data)}
         >
           <Text
             style={[
               styles.textoDia,
-              temAgendamentos && styles.textoDiaDisponivel,
-              dataInternaSelecionada?.getDate() === i &&
-                dataInternaSelecionada?.getMonth() === mesAtual.getMonth() &&
-                dataInternaSelecionada?.getFullYear() === mesAtual.getFullYear() &&
+              dataSelecionada?.getDate() === i &&
+                dataSelecionada?.getMonth() === mesAtual.getMonth() &&
+                dataSelecionada?.getFullYear() === mesAtual.getFullYear() &&
                 styles.textoDiaSelecionado,
             ]}
           >
@@ -196,14 +177,6 @@ const styles = StyleSheet.create({
   textoDia: {
     fontSize: 14,
     color: '#333',
-  },
-  diaDisponivel: {
-    backgroundColor: '#e8f5e9',
-  },
-  textoDiaDisponivel: {
-    color: '#4CAF50',
-    fontWeight: '500',
-    paddingBottom: 12,
   },
   diaSelecionado: {
     backgroundColor: '#4CAF50',
